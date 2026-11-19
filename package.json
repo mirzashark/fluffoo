@@ -1,0 +1,30 @@
+{
+  "name": "fluffoo-ecommerce-platform",
+  "version": "1.0.0",
+  "description": "Fluffoo E-Commerce Storefront, APIs, and Admin Back-Office Application",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node src/db/seed.js",
+    "dev": "node --watch src/server.js",
+    "test:e2e": "node tests/e2e-test.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "fluffoo",
+    "express",
+    "sqlite"
+  ],
+  "author": "Fluffoo Team",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.2.0",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.5.0"
+  }
+}

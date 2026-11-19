@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Order — Fluffoo Cuddles Forever</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sunshine: "#FFD52A",
+            "sunshine-hover": "#FFC928",
+            butter: "#FFF0A8",
+            "butter-light": "#FFF7D9",
+            cocoa: "#513526",
+            charcoal: "#65564E",
+            "pink-accent": "#FF3D79",
+            ivory: "#FFFDF5"
+          },
+          fontFamily: {
+            display: ["Quicksand", "sans-serif"],
+            body: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-ivory font-body text-cocoa min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-butter/60 py-4 shadow-sm">
+    <div class="max-w-5xl mx-auto px-6 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <span class="font-display text-2xl font-bold tracking-tight text-cocoa">Fluffoo<span class="text-pink-accent">.</span></span>
+      </a>
+      <div class="flex items-center gap-4 text-sm font-semibold">
+        <a href="/" class="hover:text-pink-accent transition-colors flex items-center gap-1">
+          <span class="material-symbols-outlined text-base">storefront</span> Storefront
+        </a>
+        <a href="/admin" class="hover:text-pink-accent transition-colors flex items-center gap-1 text-charcoal">
+          <span class="material-symbols-outlined text-base">lock</span> Admin Login
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Tracking Container -->
+  <main class="max-w-3xl mx-auto px-6 py-12 flex-1 w-full">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-butter/60 px-4 py-1.5 rounded-full text-xs font-bold text-cocoa uppercase tracking-wider mb-3">
+        <span class="material-symbols-outlined text-sm">local_shipping</span> Real-Time Order Tracking
+      </div>
+      <h1 class="font-display text-3xl md:text-4xl font-bold text-cocoa">Where is Your Cuddle Companion?</h1>
+      <p class="text-charcoal text-sm mt-2">Enter your Order Number and Registered Mobile Number to view live status and shipment details.</p>
+    </div>
+
+    <!-- Search Card -->
+    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-butter/60 mb-8">
+      <form id="trackingForm" onsubmit="handleTrack(event)" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-cocoa uppercase tracking-wider mb-1.5">Order Number</label>
+            <input type="text" id="orderNumber" placeholder="e.g. FLF-2026-12345" required
+              class="w-full bg-butter-light/50 border border-butter rounded-2xl px-4 py-3 text-cocoa font-semibold focus:outline-none focus:border-sunshine focus:bg-white transition-all uppercase placeholder:normal-case">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-cocoa uppercase tracking-wider mb-1.5">Registered Mobile Number</label>
+            <input type="text" id="phone" placeholder="e.g. 03001234567" required
+              class="w-full bg-butter-light/50 border border-butter rounded-2xl px-4 py-3 text-cocoa font-semibold focus:outline-none focus:border-sunshine focus:bg-white transition-all">
+          </div>
+        </div>
+
+        <button type="submit" id="trackBtn"
+          class="w-full bg-sunshine hover:bg-sunshine-hover text-cocoa font-bold py-3.5 rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2 border border-sunshine-hover">
+          <span class="material-symbols-outlined text-lg">search</span>
+          <span>Find My Order</span>
+        </button>
+      </form>
+      <div id="trackError" class="hidden mt-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium"></div>
+    </div>
+
+    <!-- Tracking Results (Hidden initially) -->
+    <div id="trackResult" class="hidden bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-butter/60 space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-butter/60 gap-4">
+        <div>
+          <span class="text-xs uppercase tracking-wider font-bold text-charcoal">Order Status</span>
+          <h2 id="resultOrderNumber" class="font-display text-2xl font-bold text-cocoa"></h2>
+          <p id="resultCustomer" class="text-xs text-charcoal mt-0.5"></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="badgeOrderStatus" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"></span>
+          <span id="badgePaymentStatus" class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"></span>
+        </div>
+      </div>
+
+      <!-- Lifecycle Progress Timeline -->
+      <div>
+        <h3 class="font-display font-bold text-base text-cocoa mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-pink-accent">route</span> Shipment Lifecycle
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center" id="timelineGrid">
+          <!-- Filled dynamically -->
+        </div>
+      </div>
+
+      <!-- Courier / Shipment Info -->
+      <div id="courierBox" class="bg-butter-light/50 rounded-2xl p-4 border border-butter">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <span class="text-xs uppercase font-bold text-charcoal">Courier Partner</span>
+            <p id="resCourier" class="font-bold text-cocoa text-sm">Awaiting Courier Assignment</p>
+          </div>
+          <div>
+            <span class="text-xs uppercase font-bold text-charcoal">Tracking Number</span>
+            <p id="resTrackingNum" class="font-bold text-cocoa text-sm">Not yet assigned</p>
+          </div>
+          <div id="courierActionBox"></div>
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <div>
+        <h3 class="font-display font-bold text-base text-cocoa mb-3">Ordered Items</h3>
+        <div id="itemsContainer" class="space-y-2"></div>
+        <div class="mt-4 pt-4 border-t border-butter/60 flex justify-between items-center font-bold text-cocoa">
+          <span>Total Payable</span>
+          <span id="resTotal" class="text-xl text-pink-accent font-display"></span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-butter/60 py-6 text-center text-xs text-charcoal">
+    <p>© 2026 Fluffoo Cuddles Forever. All rights reserved. Handcrafted with love in Pakistan.</p>
+  </footer>
+
+  <script>
+    const ALL_STAGES = [
+      { key: 'pending_confirmation', label: '1. Placed' },
+      { key: 'confirmed', label: '2. Confirmed' },
+      { key: 'processing', label: '3. Packed' },
+      { key: 'shipped', label: '4. Shipped' },
+      { key: 'out_for_delivery', label: '5. Out for Delivery' },
+      { key: 'delivered', label: '6. Delivered' }
+    ];
+
+    async function handleTrack(e) {
+      e.preventDefault();
+      const num = document.getElementById('orderNumber').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const errEl = document.getElementById('trackError');
+      const resEl = document.getElementById('trackResult');
+      const btn = document.getElementById('trackBtn');
+
+      errEl.classList.add('hidden');
+      resEl.classList.add('hidden');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="material-symbols-outlined animate-spin text-lg">progress_activity</span> Finding...`;
+
+      try {
+        const res = await fetch(`/api/v1/orders/track?order_number=${encodeURIComponent(num)}&phone=${encodeURIComponent(phone)}`);
+        const data = await res.json();
+
+        if (!data.success) {
+          errEl.textContent = data.error || 'Order tracking details not found.';
+          errEl.classList.remove('hidden');
+          return;
+        }
+
+        const o = data.order;
+        document.getElementById('resultOrderNumber').textContent = o.order_number;
+        document.getElementById('resultCustomer').textContent = `Recipient: ${o.customer_name} • ${o.city}, ${o.area}`;
+
+        // Badges
+        const orderStatusEl = document.getElementById('badgeOrderStatus');
+        orderStatusEl.textContent = o.order_status.replace(/_/g, ' ');
+        orderStatusEl.className = 'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-sunshine text-cocoa';
+
+        const paymentStatusEl = document.getElementById('badgePaymentStatus');
+        paymentStatusEl.textContent = `Payment: ${o.payment_status}`;
+        paymentStatusEl.className = o.payment_status === 'paid'
+          ? 'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-green-100 text-green-800'
+          : (o.payment_status === 'rejected' ? 'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-red-100 text-red-800' : 'px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-yellow-100 text-yellow-800');
+
+        // Courier
+        document.getElementById('resCourier').textContent = o.courier_name || 'Standard Fulfillment Dispatch';
+        document.getElementById('resTrackingNum').textContent = o.tracking_number || 'Will update upon handover to courier';
+        const actionBox = document.getElementById('courierActionBox');
+        if (o.tracking_link) {
+          actionBox.innerHTML = `<a href="${o.tracking_link}" target="_blank" class="px-4 py-2 bg-cocoa text-white font-bold text-xs rounded-full inline-flex items-center gap-1 hover:bg-cocoa/90">Track on Courier Portal <span class="material-symbols-outlined text-xs">open_in_new</span></a>`;
+        } else {
+          actionBox.innerHTML = '';
+        }
+
+        // Timeline
+        const timelineGrid = document.getElementById('timelineGrid');
+        timelineGrid.innerHTML = '';
+        let currentPassed = true;
+
+        ALL_STAGES.forEach(stage => {
+          const isCurrent = o.order_status === stage.key;
+          const stageEl = document.createElement('div');
+          stageEl.className = `p-3 rounded-2xl border text-xs font-bold ${
+            isCurrent
+              ? 'bg-sunshine text-cocoa border-sunshine shadow-xs'
+              : (currentPassed ? 'bg-butter-light text-cocoa/80 border-butter' : 'bg-gray-50 text-gray-400 border-gray-200')
+          }`;
+          stageEl.innerHTML = `<div>${stage.label}</div><div class="text-[10px] font-normal mt-0.5">${isCurrent ? 'Current Status' : (currentPassed ? 'Completed' : 'Pending')}</div>`;
+          timelineGrid.appendChild(stageEl);
+          if (isCurrent) currentPassed = false;
+        });
+
+        // Items
+        const itemsBox = document.getElementById('itemsContainer');
+        itemsBox.innerHTML = o.items.map(item => `
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-butter-light/30 border border-butter/40">
+            <div class="flex items-center gap-3">
+              ${item.image_url ? `<img src="${item.image_url}" class="w-10 h-10 object-cover rounded-xl border border-butter">` : ''}
+              <div>
+                <span class="font-bold text-sm block">${item.product_name}</span>
+                <span class="text-xs text-charcoal">${item.variation_name || 'Standard'} • Qty: ${item.quantity}</span>
+              </div>
+            </div>
+            <span class="font-bold text-sm text-cocoa">Rs. ${item.line_total.toLocaleString()}</span>
+          </div>
+        `).join('');
+
+        document.getElementById('resTotal').textContent = `Rs. ${o.total_payable.toLocaleString()}`;
+        resEl.classList.remove('hidden');
+      } catch (e) {
+        errEl.textContent = 'Network or server error. Please try again.';
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-lg">search</span><span>Find My Order</span>`;
+      }
+    }
+
+    // Auto-check URL parameters if redirected from checkout
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('order_number') && urlParams.get('phone')) {
+      document.getElementById('orderNumber').value = urlParams.get('order_number');
+      document.getElementById('phone').value = urlParams.get('phone');
+      document.getElementById('trackingForm').dispatchEvent(new Event('submit'));
+    }
+  </script>
+</body>
+</html>

@@ -7,5 +7,7 @@ dist/
 uploads/
 *.sqlite
 *.sqlite3
+*.sqlite-shm
+*.sqlite-wal
 *.db
 *.zip
