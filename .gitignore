@@ -8,3 +8,4 @@ uploads/
 *.sqlite
 *.sqlite3
 *.db
+*.zip
