@@ -71,6 +71,8 @@ CREATE TABLE IF NOT EXISTS products (
   featured_image TEXT,
   is_featured INTEGER DEFAULT 0,
   is_active INTEGER DEFAULT 1,
+  video_url TEXT,
+  specifications TEXT DEFAULT '{}',
   seo_title TEXT,
   seo_description TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,

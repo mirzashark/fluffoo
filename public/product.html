@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">Fluffoo Cuddle Buddy — Fluffoo Cuddles Forever</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sunshine: "#FFD52A",
+            "sunshine-hover": "#FFC928",
+            butter: "#FFF0A8",
+            "butter-light": "#FFF7D9",
+            cocoa: "#513526",
+            charcoal: "#65564E",
+            "pink-accent": "#FF3D79",
+            "pink-light": "#FFE0E9",
+            ivory: "#FFFDF5"
+          },
+          fontFamily: {
+            display: ["Quicksand", "sans-serif"],
+            body: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Styling for rich description embedded infographics & pictures */
+    .rich-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 1.5rem;
+      margin: 1.25rem 0;
+      box-shadow: 0 4px 20px -2px rgba(81, 53, 38, 0.08);
+      border: 1px solid #FFF0A8;
+      display: block;
+    }
+    .rich-content video {
+      width: 100%;
+      border-radius: 1.5rem;
+      margin: 1.5rem 0;
+      box-shadow: 0 6px 24px -4px rgba(81, 53, 38, 0.12);
+      border: 2px solid #FFD52A;
+      background: #000;
+    }
+    .rich-content iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 1.5rem;
+      margin: 1.5rem 0;
+      border: 2px solid #FFD52A;
+    }
+    .rich-content p {
+      margin-bottom: 1rem;
+      line-height: 1.75;
+      color: #65564E;
+    }
+    .rich-content strong {
+      color: #513526;
+      font-weight: 700;
+    }
+    .rich-content ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body class="bg-ivory font-body text-cocoa antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Header & Announcement Bar -->
+  <header class="sticky top-0 left-0 w-full z-40 bg-white/95 backdrop-blur-md shadow-xs border-b border-butter/60">
+    <!-- Announcement Bar -->
+    <div class="bg-sunshine py-1.5 px-4 border-b border-sunshine-hover">
+      <div class="max-w-7xl mx-auto flex items-center justify-between text-center text-xs text-cocoa font-bold">
+        <p class="w-full flex items-center justify-center gap-2 flex-wrap">
+          <span class="material-symbols-outlined text-sm">auto_awesome</span>
+          <span>Free Nationwide Delivery across Pakistan on orders over Rs. 3,500</span>
+          <span class="opacity-40">|</span>
+          <span class="material-symbols-outlined text-sm">chat</span>
+          <span>WhatsApp Support: +92 300 1234567</span>
+          <span class="opacity-40">|</span>
+          <span class="material-symbols-outlined text-sm text-pink-accent">redeem</span>
+          <span class="text-pink-accent bg-white/80 px-2 py-0.5 rounded-full shadow-xs">Code: CUDDLE10 for 10% Off</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <div class="max-w-7xl mx-auto px-6 h-18 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center gap-2">
+          <span class="font-display text-3xl font-bold tracking-tight text-cocoa">Fluffoo<span class="text-pink-accent">.</span></span>
+        </a>
+      </div>
+
+      <div class="hidden md:flex flex-1 max-w-md mx-6">
+        <div class="relative w-full">
+          <input type="text" placeholder="Search cuddly plushies, bears, gift sets..."
+            class="w-full bg-butter-light/60 border border-butter rounded-full py-2 pl-4 pr-10 text-xs text-cocoa placeholder:text-charcoal/60 focus:bg-white focus:outline-none focus:border-sunshine">
+          <button class="absolute right-1 top-1 w-7 h-7 rounded-full bg-sunshine hover:bg-sunshine-hover text-cocoa flex items-center justify-center font-bold">
+            <span class="material-symbols-outlined text-sm">search</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="/track" class="text-xs font-bold text-charcoal hover:text-cocoa flex items-center gap-1 py-1.5 px-3 rounded-full hover:bg-butter-light transition-colors">
+          <span class="material-symbols-outlined text-base">local_shipping</span>
+          <span class="hidden sm:inline">Track Order</span>
+        </a>
+        <a href="/admin" class="text-xs font-bold text-charcoal hover:text-cocoa flex items-center gap-1 py-1.5 px-3 rounded-full hover:bg-butter-light transition-colors">
+          <span class="material-symbols-outlined text-base">person</span>
+          <span class="hidden sm:inline">Admin</span>
+        </a>
+        <button onclick="openCartDrawer(event)" class="flex items-center gap-2 bg-butter hover:bg-sunshine py-1.5 px-4 rounded-full text-cocoa transition-all shadow-xs border border-sunshine/50">
+          <span class="material-symbols-outlined text-lg">shopping_bag</span>
+          <div class="flex flex-col text-left">
+            <span id="headerCartCount" class="text-[10px] text-charcoal font-semibold leading-tight">0 items</span>
+            <span id="headerCartTotal" class="text-xs font-bold text-cocoa leading-tight">Rs. 0</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Product Container -->
+  <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-10 flex-1">
+    
+    <!-- Breadcrumbs -->
+    <nav class="flex items-center gap-2 text-xs text-charcoal font-medium">
+      <a href="/" class="hover:text-cocoa flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">home</span> Home
+      </a>
+      <span>/</span>
+      <span id="breadcrumbCategory" class="text-charcoal hover:text-cocoa cursor-pointer">Plushies</span>
+      <span>/</span>
+      <span id="breadcrumbProduct" class="font-bold text-cocoa truncate max-w-xs">Loading companion...</span>
+    </nav>
+
+    <!-- SECTION 1: PRODUCT HERO & BUY BOX (Two Column Desktop Layout) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      
+      <!-- LEFT COLUMN: Product Gallery (Thumbnails + Main Stage + Video Play) -->
+      <div class="lg:col-span-7 flex flex-col-reverse md:flex-row gap-4">
+        
+        <!-- Thumbnails Column -->
+        <div id="galleryThumbnails" class="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto max-h-[560px] pb-2 md:pb-0 scrollbar-none shrink-0">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Main Display Frame with Zoom & Badges -->
+        <div class="relative flex-1 aspect-square bg-white rounded-3xl p-4 shadow-sm border border-butter/80 flex items-center justify-center overflow-hidden group">
+          <img id="mainProductImage" src="" alt="" class="w-full h-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-105">
+          
+          <!-- Embedded Video Player in Main Frame (Hidden by default until clicked or toggled) -->
+          <video id="mainProductVideo" controls class="hidden w-full h-full object-contain rounded-2xl bg-black"></video>
+
+          <!-- Floating Badges -->
+          <div class="absolute top-6 left-6 flex flex-col gap-1.5 z-10">
+            <span class="bg-sunshine text-cocoa font-display font-bold text-xs px-3 py-1 rounded-full shadow-xs uppercase tracking-wider flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">stars</span> Bestseller
+            </span>
+            <span id="floatingDiscountBadge" class="bg-pink-accent text-white font-bold text-xs px-3 py-1 rounded-full shadow-xs">
+              17% OFF
+            </span>
+          </div>
+
+          <!-- Wishlist Heart Button -->
+          <button id="pdpWishlistBtn" onclick="toggleWishlist(this)" class="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/95 backdrop-blur-md text-pink-accent hover:scale-110 flex items-center justify-center shadow-md border border-butter transition-all z-10">
+            <span class="material-symbols-outlined text-xl">favorite_border</span>
+          </button>
+
+          <!-- Video Play Indicator (if video available) -->
+          <button id="heroVideoTrigger" onclick="playHeroVideo()" class="hidden absolute bottom-6 right-6 px-4 py-2 rounded-full bg-cocoa/90 hover:bg-cocoa text-white font-bold text-xs shadow-lg backdrop-blur-md flex items-center gap-1.5 transition-all">
+            <span class="material-symbols-outlined text-base text-sunshine">play_circle</span> Watch Video
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Buy Box & Options -->
+      <div class="lg:col-span-5 flex flex-col gap-5 bg-white p-6 md:p-8 rounded-3xl border border-butter/80 shadow-sm">
+        
+        <!-- Category & Brand Badge -->
+        <div class="flex items-center justify-between">
+          <span id="productCategoryBadge" class="text-xs uppercase tracking-wider font-bold text-pink-accent bg-pink-light/60 px-3 py-1 rounded-full">
+            Fluffoo Collection
+          </span>
+          <span class="text-xs text-charcoal font-semibold flex items-center gap-1">
+            <span class="text-sunshine-hover font-bold text-sm">★★★★★</span>
+            <span>4.9 (84 reviews)</span>
+          </span>
+        </div>
+
+        <!-- Product Title -->
+        <h1 id="productTitle" class="font-display text-2xl sm:text-3xl font-bold text-cocoa leading-tight">
+          Loading product...
+        </h1>
+
+        <!-- Price Block -->
+        <div class="flex items-baseline gap-3 pb-3 border-b border-butter/60">
+          <span id="productSalePrice" class="font-display text-3xl font-bold text-pink-accent">Rs. 0</span>
+          <span id="productRegularPrice" class="text-base text-charcoal/60 line-through">Rs. 0</span>
+          <span id="productSavingsBadge" class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full">
+            Save 20%
+          </span>
+        </div>
+
+        <!-- Live Stock Availability Status -->
+        <div class="flex items-center gap-2 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>In Stock — Ready to ship nationwide (2-4 business days)</span>
+        </div>
+
+        <!-- Dynamic Variations (Color & Size Swatches) -->
+        <div id="variationSelectorsContainer" class="space-y-4">
+          <!-- Populated dynamically: Color pills, Size buttons -->
+        </div>
+
+        <!-- Quantity Stepper -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-charcoal">Quantity</label>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center border border-butter rounded-full bg-butter-light/60 p-1">
+              <button onclick="changePdpQty(-1)" class="w-8 h-8 rounded-full bg-white text-cocoa font-bold hover:bg-butter transition-colors flex items-center justify-center">-</button>
+              <span id="pdpQtyValue" class="w-10 text-center font-bold text-sm text-cocoa">1</span>
+              <button onclick="changePdpQty(1)" class="w-8 h-8 rounded-full bg-white text-cocoa font-bold hover:bg-butter transition-colors flex items-center justify-center">+</button>
+            </div>
+            <span class="text-xs text-charcoal">Limit 10 per order</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3 pt-2">
+          <!-- Add to Bag -->
+          <button id="pdpAddToCartBtn" onclick="handlePdpAddToCart()"
+            class="w-full py-4 rounded-full bg-sunshine hover:bg-sunshine-hover text-cocoa font-display font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 border border-sunshine-hover">
+            <span class="material-symbols-outlined text-xl">shopping_bag</span>
+            <span>Add to Cuddle Bag</span>
+          </button>
+
+          <!-- Buy It Now (Instant Direct Checkout) -->
+          <button id="pdpBuyNowBtn" onclick="handlePdpBuyNow()"
+            class="w-full py-3.5 rounded-full bg-cocoa hover:bg-cocoa/90 text-white font-display font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-lg">bolt</span>
+            <span>Buy It Now with Cash on Delivery / Online</span>
+          </button>
+        </div>
+
+        <!-- Trust & Security Reassurances (SRS § 3 & § 5) -->
+        <div class="grid grid-cols-2 gap-3 pt-3 border-t border-butter/60 text-xs">
+          <div class="flex items-center gap-2 text-cocoa font-semibold">
+            <span class="material-symbols-outlined text-sunshine-hover text-lg">local_shipping</span>
+            <span>Free Delivery on Rs. 3,500+</span>
+          </div>
+          <div class="flex items-center gap-2 text-cocoa font-semibold">
+            <span class="material-symbols-outlined text-pink-accent text-lg">verified_user</span>
+            <span>100% Baby-Safe &amp; Soft</span>
+          </div>
+          <div class="flex items-center gap-2 text-cocoa font-semibold">
+            <span class="material-symbols-outlined text-sunshine-hover text-lg">published_with_changes</span>
+            <span>7-Day Return Policy</span>
+          </div>
+          <div class="flex items-center gap-2 text-cocoa font-semibold">
+            <span class="material-symbols-outlined text-emerald-600 text-lg">chat</span>
+            <span>WhatsApp Support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: RICH VISUAL DESCRIPTION & INFOGRAPHICS (Matching Reference Screenshot!) -->
+    <section class="bg-white rounded-3xl p-6 sm:p-10 border border-butter/80 shadow-sm space-y-8">
+      
+      <!-- Section Header -->
+      <div class="border-b border-butter pb-4 flex items-center justify-between">
+        <div>
+          <span class="text-xs uppercase tracking-wider font-bold text-pink-accent">Craftsmanship &amp; Story</span>
+          <h2 class="font-display text-2xl font-bold text-cocoa mt-0.5">Product Details &amp; Visual Experience</h2>
+        </div>
+        <div class="hidden sm:flex items-center gap-2 text-xs text-charcoal font-semibold">
+          <span class="material-symbols-outlined text-sunshine-hover">photo_library</span> High-Resolution Gallery
+        </div>
+      </div>
+
+      <!-- Hero Video Banner (If product has video) -->
+      <div id="productVideoBlock" class="hidden">
+        <h3 class="font-display font-bold text-lg text-cocoa mb-3 flex items-center gap-2">
+          <span class="material-symbols-outlined text-pink-accent">play_circle</span> Watch in Action
+        </h3>
+        <div class="relative w-full rounded-3xl overflow-hidden aspect-video bg-black shadow-md border-2 border-sunshine">
+          <video id="dedicatedVideoPlayer" controls class="w-full h-full object-contain"></video>
+        </div>
+      </div>
+
+      <!-- Product Specifications Table (SRS § 3.4) -->
+      <div id="productSpecsCard" class="bg-butter-light/50 rounded-2xl p-6 border border-butter">
+        <h3 class="font-display font-bold text-base text-cocoa mb-4 flex items-center gap-2">
+          <span class="material-symbols-outlined text-sunshine-hover">tune</span> Specifications &amp; Dimensions
+        </h3>
+        <div id="productSpecsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <!-- Filled dynamically -->
+        </div>
+      </div>
+
+      <!-- Rich Infographics & Descriptive Content -->
+      <div class="space-y-6">
+        <h3 class="font-display font-bold text-lg text-cocoa flex items-center gap-2">
+          <span class="material-symbols-outlined text-sunshine-hover">sentiment_very_satisfied</span> Why You'll Love This Cuddle Buddy
+        </h3>
+        <div id="productRichDescription" class="rich-content text-sm text-charcoal leading-relaxed max-w-4xl mx-auto">
+          <!-- Rich HTML with infographics images, diagrams, and text dynamically rendered here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: REVIEWS & TESTIMONIALS -->
+    <section class="bg-white rounded-3xl p-6 sm:p-10 border border-butter/80 shadow-sm space-y-6">
+      <div class="flex items-center justify-between border-b border-butter pb-4">
+        <div>
+          <span class="text-xs uppercase tracking-wider font-bold text-sunshine-hover">Customer Love</span>
+          <h2 class="font-display text-2xl font-bold text-cocoa mt-0.5">Verified Pakistani Reviews</h2>
+        </div>
+        <button onclick="alert('Thank you! Review form is open to verified buyers.')" class="px-4 py-2 rounded-full bg-butter hover:bg-sunshine text-cocoa font-bold text-xs transition-colors border border-sunshine/50">
+          Write a Review
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-5 rounded-2xl bg-butter-light/40 border border-butter">
+          <div class="flex items-center gap-1 text-sunshine-hover text-sm mb-2">★★★★★</div>
+          <p class="text-xs text-cocoa italic mb-3">"So much softer in person than on screen! The running legs mechanism is so fun for my toddler. Safe stitching and zero shedding."</p>
+          <div class="text-[11px] font-bold text-cocoa">Zainab T. • Karachi, DHA</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-butter-light/40 border border-butter">
+          <div class="flex items-center gap-1 text-sunshine-hover text-sm mb-2">★★★★★</div>
+          <p class="text-xs text-cocoa italic mb-3">"Ordered as an anniversary surprise in Lahore. Luxury ribbon box and handwritten greeting card made it unforgettable. 10/10 packaging!"</p>
+          <div class="text-[11px] font-bold text-cocoa">Hamza S. • Lahore, Gulberg</div>
+        </div>
+        <div class="p-5 rounded-2xl bg-butter-light/40 border border-butter">
+          <div class="flex items-center gap-1 text-sunshine-hover text-sm mb-2">★★★★★</div>
+          <p class="text-xs text-cocoa italic mb-3">"Cash on Delivery arrived in 2 days in Islamabad. Extra bouncy cloud stuffing that bounces right back after giant hugs."</p>
+          <div class="text-[11px] font-bold text-cocoa">Ayesha N. • Islamabad, F-10</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: RELATED PRODUCTS CAROUSEL -->
+    <section class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h2 class="font-display text-2xl font-bold text-cocoa">You May Also Love</h2>
+        <a href="/" class="text-xs font-bold text-amber-700 hover:underline">View All Cuddle Buddies →</a>
+      </div>
+      <div id="relatedProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Filled dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- STICKY MOBILE BOTTOM BAR (As shown in screenshot) -->
+  <div id="stickyMobileBar" class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-butter px-4 py-3 z-30 shadow-lg flex items-center justify-between gap-3">
+    <div class="flex items-center gap-2.5 min-w-0">
+      <img id="stickyThumb" src="" alt="" class="w-10 h-10 object-cover rounded-xl border border-butter shrink-0">
+      <div class="min-w-0">
+        <h4 id="stickyTitle" class="text-xs font-bold text-cocoa truncate">Loading...</h4>
+        <span id="stickyPrice" class="text-xs font-bold text-pink-accent">Rs. 0</span>
+      </div>
+    </div>
+    <button onclick="handlePdpAddToCart()" class="px-5 py-2.5 bg-sunshine hover:bg-sunshine-hover text-cocoa font-bold text-xs rounded-full shadow-sm shrink-0 border border-sunshine-hover">
+      Add to Bag
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <footer class="w-full bg-butter-light border-t border-butter/60 py-10 mt-12">
+    <div class="max-w-7xl mx-auto px-6 text-center text-xs text-charcoal space-y-2">
+      <p class="font-display font-bold text-sm text-cocoa">Fluffoo — Cuddles Forever</p>
+      <p>Handcrafted with love across Pakistan • Cash on Delivery • 100% Baby-Safe Toys</p>
+      <p class="pt-2 text-[11px] text-charcoal/60">© 2026 Fluffoo.pk. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Slide-Over Cart & Checkout Drawer Modal Elements -->
+  <!-- ================= SLIDE-OVER CART DRAWER ================= -->
+  <div id="cartDrawerBackdrop" onclick="closeCartDrawer()" class="hidden fixed inset-0 bg-cocoa/40 backdrop-blur-xs z-50 transition-opacity"></div>
+  <aside id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-ivory shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col border-l border-butter">
+    <div class="p-5 bg-white border-b border-butter flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-sunshine-hover">shopping_bag</span>
+        <h3 class="font-display font-bold text-lg text-cocoa">Your Cuddle Bag</h3>
+      </div>
+      <button onclick="closeCartDrawer()" class="w-8 h-8 rounded-full bg-butter-light hover:bg-butter flex items-center justify-center text-cocoa transition-colors">✕</button>
+    </div>
+
+    <!-- Free Delivery Indicator -->
+    <div class="bg-butter/40 px-5 py-2.5 border-b border-butter text-xs text-center font-semibold text-cocoa" id="drawerFreeShippingPrompt">
+      Free nationwide delivery on orders over Rs. 3,500
+    </div>
+
+    <!-- Items List -->
+    <div id="cartDrawerItems" class="flex-1 p-5 overflow-y-auto space-y-3"></div>
+
+    <!-- Drawer Footer -->
+    <div class="p-5 bg-white border-t border-butter space-y-4">
+      <div class="flex justify-between items-center text-cocoa font-bold">
+        <span>Subtotal</span>
+        <span id="drawerSubtotal" class="font-display text-xl text-pink-accent">Rs. 0</span>
+      </div>
+      <button onclick="openCheckoutModal()" class="w-full bg-sunshine hover:bg-sunshine-hover text-cocoa font-bold py-3.5 rounded-full shadow-md border border-sunshine-hover transition-all flex items-center justify-center gap-2">
+        <span>Proceed to Checkout</span>
+        <span class="material-symbols-outlined text-base">arrow_forward</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= CHECKOUT MODAL (COD & MANUAL ONLINE PAYMENT) ================= -->
+  <div id="checkoutModal" class="hidden fixed inset-0 z-50 bg-cocoa/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-ivory rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto p-6 md:p-8 shadow-2xl border border-butter space-y-6">
+      
+      <div class="flex items-center justify-between pb-4 border-b border-butter">
+        <div>
+          <span class="text-xs uppercase tracking-wider font-bold text-pink-accent">Smooth Guest Checkout</span>
+          <h2 class="font-display text-2xl font-bold text-cocoa">Complete Your Cuddle Order</h2>
+        </div>
+        <button onclick="closeCheckoutModal()" class="w-8 h-8 rounded-full bg-white hover:bg-butter flex items-center justify-center text-cocoa border border-butter">✕</button>
+      </div>
+
+      <div id="checkoutError" class="hidden p-3 rounded-2xl bg-red-100 border border-red-300 text-red-800 text-xs font-bold"></div>
+
+      <form id="checkoutForm" onsubmit="submitOrder(event)" class="space-y-4 text-xs">
+        
+        <!-- Customer Info -->
+        <div class="bg-white p-4 rounded-2xl border border-butter/60 space-y-3">
+          <h4 class="font-bold text-cocoa text-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sunshine-hover text-base">person</span> 1. Delivery Contact
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-charcoal mb-1">Full Name *</label>
+              <input type="text" id="custName" required placeholder="e.g. Fatima Ali" class="w-full bg-butter-light/50 border border-butter rounded-xl p-2.5 text-cocoa font-medium focus:bg-white focus:outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-charcoal mb-1">Mobile Number (WhatsApp) *</label>
+              <input type="text" id="custPhone" required placeholder="e.g. 03001234567" class="w-full bg-butter-light/50 border border-butter rounded-xl p-2.5 text-cocoa font-medium focus:bg-white focus:outline-none">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block font-bold text-charcoal mb-1">Email Address (Optional)</label>
+              <input type="email" id="custEmail" placeholder="e.g. fatima@gmail.com" class="w-full bg-butter-light/50 border border-butter rounded-xl p-2.5 text-cocoa font-medium focus:bg-white focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Address Info -->
+        <div class="bg-white p-4 rounded-2xl border border-butter/60 space-y-3">
+          <h4 class="font-bold text-cocoa text-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sunshine-hover text-base">home_pin</span> 2. Delivery Address
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-charcoal mb-1">City *</label>
+              <select id="checkoutCity" onchange="updateCheckoutSummary()" required class="w-full bg-butter-light/50 border border-butter rounded-xl p-2.5 text-cocoa font-medium focus:bg-white focus:outline-none">
+                <option value="">Select your city...</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-charcoal mb-1">Area / Sector *</label>
+              <input type="text" id="custArea" required placeholder="e.g. DHA Phase 5, Gulberg III" class="w-full bg-butter-light/50 border border-butter rounded-xl p-2.5 text-cocoa font-medium focus:bg-white focus:outline-none">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block font-bold text-charcoal mb-1">Complete Street Address *</label>
+              <input type="text" id="custAddress" required placeholder="House/Apartment #, Street, Landmark" class="w-full bg-butter-light/50 border border-butter rounded-xl p-2.5 text-cocoa font-medium focus:bg-white focus:outline-none">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block font-bold text-charcoal mb-1">Gift Card Message / Order Notes (Optional)</label>
+              <textarea id="custNotes" rows="2" placeholder="Special handwritten gift card message or delivery instructions..." class="w-full bg-butter-light/50 border border-butter rounded-xl p-2 text-cocoa font-medium focus:bg-white focus:outline-none"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coupon Box -->
+        <div class="bg-white p-4 rounded-2xl border border-butter/60 flex items-center gap-2">
+          <input type="text" id="checkoutCouponInput" placeholder="Enter coupon (e.g. CUDDLE10)" class="flex-1 bg-butter-light/40 border border-butter rounded-xl px-3 py-2 text-cocoa uppercase font-bold focus:outline-none focus:bg-white">
+          <button type="button" onclick="applyCoupon()" class="px-4 py-2 bg-butter hover:bg-sunshine text-cocoa font-bold rounded-xl transition-all">Apply</button>
+        </div>
+        <p id="couponStatus"></p>
+
+        <!-- Payment Method Selection (SRS § 5) -->
+        <div class="bg-white p-4 rounded-2xl border border-butter/60 space-y-3">
+          <h4 class="font-bold text-cocoa text-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sunshine-hover text-base">payments</span> 3. Payment Method
+          </h4>
+          <div class="space-y-2">
+            <label class="flex items-center gap-3 p-3 rounded-xl border border-butter cursor-pointer hover:bg-butter-light/40 transition-colors">
+              <input type="radio" name="payment_method" value="cod" checked onchange="handlePaymentMethodChange()" class="text-sunshine focus:ring-sunshine">
+              <div>
+                <strong class="text-cocoa font-bold block">Cash on Delivery (COD)</strong>
+                <span class="text-charcoal text-[11px]">Pay cash when your squishy cuddle companion arrives at your doorstep.</span>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-3 p-3 rounded-xl border border-butter cursor-pointer hover:bg-butter-light/40 transition-colors">
+              <input type="radio" name="payment_method" value="manual_online" onchange="handlePaymentMethodChange()" class="text-sunshine focus:ring-sunshine">
+              <div>
+                <strong class="text-cocoa font-bold block">Manual Online Payment / Bank Transfer / Mobile Wallet</strong>
+                <span class="text-charcoal text-[11px]">Transfer via Meezan Bank, JazzCash, or EasyPaisa &amp; upload proof for human verification.</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Manual Payment Instructions & Proof Upload (Hidden by default) -->
+          <div id="manualPaymentFields" class="hidden mt-3 pt-3 border-t border-butter/60 space-y-3">
+            <div id="bankDetailsBox"></div>
+            <div>
+              <label class="block font-bold text-cocoa mb-1">Upload Payment Screenshot / Receipt (.jpg, .png, .pdf) *</label>
+              <input type="file" id="proofFileInput" accept=".jpg,.jpeg,.png,.pdf" class="w-full bg-butter-light/50 border border-butter rounded-xl p-2 text-cocoa">
+            </div>
+            <div>
+              <label class="block font-bold text-cocoa mb-1">Transaction Reference / ID (Optional)</label>
+              <input type="text" id="txRefInput" placeholder="e.g. TRX-98234729" class="w-full bg-butter-light/50 border border-butter rounded-xl p-2.5 text-cocoa">
+            </div>
+            <p class="text-[10px] text-charcoal italic">Note: Uploading a payment screenshot does not automatically mark an order as paid. Our team verifies every transaction before dispatch.</p>
+          </div>
+        </div>
+
+        <!-- Order Payable Summary -->
+        <div class="bg-butter/50 p-4 rounded-2xl border border-butter space-y-1.5 text-cocoa font-medium">
+          <div class="flex justify-between">
+            <span>Items Subtotal:</span>
+            <strong id="checkoutSubtotal">Rs. 0</strong>
+          </div>
+          <div class="flex justify-between">
+            <span>Coupon Discount:</span>
+            <strong id="checkoutDiscount" class="text-emerald-700">Rs. 0</strong>
+          </div>
+          <div class="flex justify-between">
+            <span>Nationwide Delivery:</span>
+            <strong id="checkoutDelivery">Rs. 250</strong>
+          </div>
+          <div class="flex justify-between pt-2 border-t border-butter text-sm font-bold text-cocoa">
+            <span>Total Payable Amount:</span>
+            <span id="checkoutTotal" class="font-display text-xl text-pink-accent">Rs. 0</span>
+          </div>
+        </div>
+
+        <button type="submit" id="placeOrderBtn" class="w-full py-4 rounded-full bg-sunshine hover:bg-sunshine-hover text-cocoa font-display font-bold text-base shadow-lg transition-all border border-sunshine-hover">
+          Complete Cuddle Order
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= ORDER CONFIRMATION DIALOG ================= -->
+  <div id="orderConfirmationModal" class="hidden fixed inset-0 z-50 bg-cocoa/70 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center space-y-5 border border-butter shadow-2xl">
+      <div class="w-16 h-16 mx-auto rounded-full bg-sunshine text-cocoa flex items-center justify-center shadow-md">
+        <span class="material-symbols-outlined text-3xl">celebration</span>
+      </div>
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-pink-accent">Order Confirmed!</span>
+        <h3 class="font-display text-2xl font-bold text-cocoa mt-1">Thank You for Your Cuddle Order</h3>
+        <p class="text-xs text-charcoal mt-1">We are preparing your squishy friend with boundless love.</p>
+      </div>
+
+      <div class="bg-butter-light/60 p-4 rounded-2xl border border-butter text-left text-xs space-y-1.5 text-cocoa">
+        <div class="flex justify-between"><span class="text-charcoal">Order Number:</span><strong id="confirmOrderNumber" class="font-mono text-amber-800 font-bold"></strong></div>
+        <div class="flex justify-between"><span class="text-charcoal">Recipient:</span><span id="confirmRecipient"></span></div>
+        <div class="flex justify-between"><span class="text-charcoal">Payment:</span><span id="confirmMethod" class="font-semibold"></span></div>
+        <div class="flex justify-between pt-1 border-t border-butter text-sm font-bold"><span>Total Payable:</span><span id="confirmTotal" class="text-pink-accent"></span></div>
+      </div>
+
+      <div class="space-y-2 pt-2">
+        <a id="confirmWhatsAppBtn" href="#" target="_blank" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs rounded-full shadow-sm flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-base">chat</span> Notify on WhatsApp
+        </a>
+        <a id="confirmTrackBtn" href="#" class="w-full py-3 bg-butter-light hover:bg-butter text-cocoa font-bold text-xs rounded-full border border-butter flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-base">local_shipping</span> Track This Order
+        </a>
+        <button onclick="closeConfirmationModal()" class="w-full py-2.5 text-xs text-charcoal hover:underline">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cuddleToast" class="fixed bottom-6 right-6 z-50 transform translate-y-32 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-white px-5 py-3 rounded-full shadow-xl border border-sunshine">
+    <div class="w-8 h-8 rounded-full bg-sunshine text-cocoa flex items-center justify-center font-bold">
+      <span class="material-symbols-outlined text-base">favorite</span>
+    </div>
+    <div class="flex flex-col pr-2">
+      <span class="text-xs text-cocoa uppercase font-bold tracking-wider">Cuddle Bag Updated!</span>
+      <span class="text-xs text-charcoal" id="toastMessage">Item added</span>
+    </div>
+  </div>
+
+  <script src="/js/storefront.js"></script>
+  <script>
+    let currentProduct = null;
+    let selectedVariation = null;
+    let pdpQuantity = 1;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Determine slug from URL: /product/:slug or /products/:slug or ?slug=...
+      const pathParts = window.location.pathname.split('/').filter(Boolean);
+      let slug = pathParts[pathParts.length - 1];
+
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('slug')) {
+        slug = urlParams.get('slug');
+      }
+
+      if (!slug || slug === 'product' || slug === 'products') {
+        slug = 'fluffoo-galloping-daisy-cow-plushie'; // Default showcase
+      }
+
+      await loadProductData(slug);
+    });
+
+    async function loadProductData(slug) {
+      try {
+        const res = await fetch(`/api/v1/products/${slug}`);
+        const data = await res.json();
+        if (!data.success || !data.product) {
+          document.getElementById('productTitle').textContent = 'Product Not Found';
+          return;
+        }
+
+        currentProduct = data.product;
+        renderPdp();
+      } catch (e) {
+        console.error('Error loading product:', e);
+      }
+    }
+
+    function renderPdp() {
+      const p = currentProduct;
+      document.title = `${p.name} — Fluffoo Cuddles Forever`;
+      document.getElementById('breadcrumbCategory').textContent = p.category_name || 'Plush Companions';
+      document.getElementById('breadcrumbProduct').textContent = p.name;
+      document.getElementById('productCategoryBadge').textContent = p.category_name || 'Fluffoo Original';
+      document.getElementById('productTitle').textContent = p.name;
+      document.getElementById('stickyTitle').textContent = p.name;
+
+      // Prices
+      const sPrice = p.sale_price || p.regular_price;
+      document.getElementById('productSalePrice').textContent = `Rs. ${sPrice.toLocaleString()}`;
+      document.getElementById('stickyPrice').textContent = `Rs. ${sPrice.toLocaleString()}`;
+
+      if (p.sale_price && p.sale_price < p.regular_price) {
+        document.getElementById('productRegularPrice').textContent = `Rs. ${p.regular_price.toLocaleString()}`;
+        document.getElementById('productRegularPrice').classList.remove('hidden');
+        const pct = Math.round(((p.regular_price - p.sale_price) / p.regular_price) * 100);
+        document.getElementById('productSavingsBadge').textContent = `Save ${pct}%`;
+        document.getElementById('floatingDiscountBadge').textContent = `${pct}% OFF`;
+      } else {
+        document.getElementById('productRegularPrice').classList.add('hidden');
+        document.getElementById('productSavingsBadge').classList.add('hidden');
+        document.getElementById('floatingDiscountBadge').classList.add('hidden');
+      }
+
+      // Main image & thumbnails
+      const images = p.images && p.images.length ? p.images : [p.featured_image || ''];
+      const mainImg = document.getElementById('mainProductImage');
+      mainImg.src = images[0];
+      document.getElementById('stickyThumb').src = images[0];
+
+      const thumbsContainer = document.getElementById('galleryThumbnails');
+      thumbsContainer.innerHTML = images.map((img, idx) => `
+        <button onclick="setMainImage('${img}', this)" class="thumbnail-btn w-16 h-16 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-white shrink-0 ${idx === 0 ? 'border-sunshine shadow-xs scale-105' : 'border-butter/60 opacity-80 hover:opacity-100'}">
+          <img src="${img}" class="w-full h-full object-cover rounded-xl" alt="Thumbnail">
+        </button>
+      `).join('');
+
+      // Hero Video setup
+      if (p.video_url) {
+        const trigger = document.getElementById('heroVideoTrigger');
+        trigger.classList.remove('hidden');
+        const vPlayer = document.getElementById('dedicatedVideoPlayer');
+        vPlayer.src = p.video_url;
+        document.getElementById('productVideoBlock').classList.remove('hidden');
+      }
+
+      // Variations rendering (Color & Size)
+      renderVariationSelectors();
+
+      // Specifications rendering
+      const specs = p.specifications || {};
+      const specsGrid = document.getElementById('productSpecsGrid');
+      if (Object.keys(specs).length) {
+        specsGrid.innerHTML = Object.entries(specs).map(([k, v]) => `
+          <div class="flex flex-col p-2.5 rounded-xl bg-white border border-butter/60">
+            <span class="text-charcoal/70 uppercase text-[10px] font-bold">${k}</span>
+            <span class="text-cocoa font-bold text-xs mt-0.5">${v}</span>
+          </div>
+        `).join('');
+      } else {
+        document.getElementById('productSpecsCard').classList.add('hidden');
+      }
+
+      // Rich Description Rendering (with pictures and infographics!)
+      const richDesc = document.getElementById('productRichDescription');
+      richDesc.innerHTML = p.full_description || `<p>${p.short_description}</p>`;
+
+      // Related Products
+      const relGrid = document.getElementById('relatedProductsGrid');
+      if (p.related && p.related.length) {
+        relGrid.innerHTML = p.related.map(r => `
+          <a href="/product/${r.slug}" class="group bg-white rounded-2xl p-4 shadow-xs hover:shadow-md transition-all border border-butter flex flex-col justify-between">
+            <div>
+              <div class="aspect-square rounded-xl bg-butter-light overflow-hidden mb-3">
+                <img src="${r.featured_image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+              </div>
+              <h4 class="font-bold text-xs text-cocoa line-clamp-1">${r.name}</h4>
+            </div>
+            <div class="mt-3 pt-2 border-t border-butter/60 flex items-center justify-between">
+              <span class="font-bold text-sm text-pink-accent">Rs. ${(r.sale_price || r.regular_price).toLocaleString()}</span>
+              <span class="w-7 h-7 rounded-full bg-sunshine text-cocoa flex items-center justify-center font-bold text-xs">→</span>
+            </div>
+          </a>
+        `).join('');
+      }
+    }
+
+    function setMainImage(imgUrl, btn) {
+      document.getElementById('mainProductImage').src = imgUrl;
+      document.getElementById('mainProductImage').classList.remove('hidden');
+      document.getElementById('mainProductVideo').classList.add('hidden');
+      document.getElementById('mainProductVideo').pause();
+
+      document.querySelectorAll('.thumbnail-btn').forEach(b => {
+        b.className = 'thumbnail-btn w-16 h-16 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-white shrink-0 border-butter/60 opacity-80 hover:opacity-100';
+      });
+      if (btn) {
+        btn.className = 'thumbnail-btn w-16 h-16 rounded-2xl overflow-hidden border-2 transition-all p-1 bg-white shrink-0 border-sunshine shadow-xs scale-105';
+      }
+    }
+
+    function playHeroVideo() {
+      if (!currentProduct || !currentProduct.video_url) return;
+      const v = document.getElementById('mainProductVideo');
+      v.src = currentProduct.video_url;
+      document.getElementById('mainProductImage').classList.add('hidden');
+      v.classList.remove('hidden');
+      v.play();
+    }
+
+    function renderVariationSelectors() {
+      const container = document.getElementById('variationSelectorsContainer');
+      const vars = currentProduct.variations || [];
+      if (!vars.length) {
+        container.innerHTML = '';
+        return;
+      }
+
+      // Group variants
+      let html = '';
+      html += `
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-charcoal">Select Option / Size</label>
+          <div class="flex flex-wrap gap-2">
+            ${vars.map((v, idx) => `
+              <button type="button" onclick="selectVariant(${idx}, this)"
+                class="variant-btn px-4 py-2 rounded-full border text-xs font-bold transition-all ${idx === 0 ? 'bg-sunshine border-sunshine-hover text-cocoa shadow-xs' : 'bg-white border-butter text-charcoal hover:bg-butter-light'}">
+                ${v.attribute_value}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+      selectedVariation = vars[0];
+    }
+
+    function selectVariant(idx, btn) {
+      const vars = currentProduct.variations;
+      selectedVariation = vars[idx];
+
+      document.querySelectorAll('.variant-btn').forEach(b => {
+        b.className = 'variant-btn px-4 py-2 rounded-full border text-xs font-bold transition-all bg-white border-butter text-charcoal hover:bg-butter-light';
+      });
+      btn.className = 'variant-btn px-4 py-2 rounded-full border text-xs font-bold transition-all bg-sunshine border-sunshine-hover text-cocoa shadow-xs';
+
+      if (selectedVariation.sale_price) {
+        document.getElementById('productSalePrice').textContent = `Rs. ${selectedVariation.sale_price.toLocaleString()}`;
+        document.getElementById('stickyPrice').textContent = `Rs. ${selectedVariation.sale_price.toLocaleString()}`;
+      }
+
+      if (selectedVariation.image_url) {
+        setMainImage(selectedVariation.image_url);
+      }
+    }
+
+    function changePdpQty(delta) {
+      pdpQuantity += delta;
+      if (pdpQuantity < 1) pdpQuantity = 1;
+      if (pdpQuantity > 10) pdpQuantity = 10;
+      document.getElementById('pdpQtyValue').textContent = pdpQuantity;
+    }
+
+    function handlePdpAddToCart() {
+      if (!currentProduct) return;
+      const v = selectedVariation;
+      const id = currentProduct.id;
+      const name = currentProduct.name + (v ? ` (${v.attribute_value})` : '');
+      const price = v ? (v.sale_price || v.regular_price) : (currentProduct.sale_price || currentProduct.regular_price);
+      const img = (v && v.image_url) || currentProduct.featured_image;
+      const sku = (v && v.sku) || currentProduct.sku;
+
+      const existingIndex = cart.findIndex(item => item.product_id === id && item.variation_id === (v ? v.id : null));
+
+      if (existingIndex > -1) {
+        cart[existingIndex].quantity += pdpQuantity;
+      } else {
+        cart.push({
+          product_id: id,
+          variation_id: v ? v.id : null,
+          name,
+          price,
+          image_url: img,
+          sku,
+          quantity: pdpQuantity
+        });
+      }
+
+      updateHeaderCart();
+      showToast(`${pdpQuantity}x ${name} added to your cuddle bag!`);
+      openCartDrawer();
+    }
+
+    function handlePdpBuyNow() {
+      handlePdpAddToCart();
+      setTimeout(() => {
+        openCheckoutModal();
+      }, 300);
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('cuddleToast');
+      const msg = document.getElementById('toastMessage');
+      msg.textContent = text;
+      toast.classList.remove('translate-y-32', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-32', 'opacity-0');
+      }, 3200);
+    }
+
+    function toggleWishlist(btn) {
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (icon.textContent === 'favorite_border') {
+        icon.textContent = 'favorite';
+        btn.classList.add('text-pink-accent');
+        showToast('Saved to your Wishlist!');
+      } else {
+        icon.textContent = 'favorite_border';
+        btn.classList.remove('text-pink-accent');
+        showToast('Removed from Wishlist');
+      }
+    }
+  </script>
+</body>
+</html>

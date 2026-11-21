@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static frontend assets
 const publicPath = path.resolve(__dirname, '../public');
 app.use(express.static(publicPath));
+app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
 
 // Health check endpoint
 app.get('/api/v1/health', (req, res) => {
@@ -58,6 +59,14 @@ app.use('/api/v1/settings', settingsRouter);
 app.use('/api/v1/admin', adminRouter);
 
 // Specific page routes
+app.get('/product/:slug', (req, res) => {
+  res.sendFile(path.join(publicPath, 'product.html'));
+});
+
+app.get('/products/:slug', (req, res) => {
+  res.sendFile(path.join(publicPath, 'product.html'));
+});
+
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(publicPath, 'admin', 'index.html'));
 });

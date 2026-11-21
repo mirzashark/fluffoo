@@ -44,7 +44,7 @@ async function runTests() {
 
     // 2. Products Endpoint
     console.log('\n--- Test 2: Products Catalog ---');
-    const prodRes = await request('/api/v1/products');
+    const prodRes = await request('/api/v1/products?limit=50');
     assert(prodRes.status === 200 && prodRes.data.products.length >= 8, `Fetched ${prodRes.data?.products?.length} catalog products`);
     const honeyBear = prodRes.data.products.find(p => p.sku === 'FLF-HB-45');
     assert(honeyBear && honeyBear.regular_price === 3450 && honeyBear.sale_price === 2850, 'Original Honey Bear prices and discount percentage verified');

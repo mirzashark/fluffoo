@@ -54,16 +54,21 @@ const productStorage = multer.diskStorage({
   }
 });
 
+const allowedProductMimes = [
+  'image/jpeg', 'image/png', 'image/webp', 'image/jpg', 'image/gif', 'image/svg+xml',
+  'video/mp4', 'video/webm', 'video/ogg'
+];
+
 export const uploadProductImage = multer({
   storage: productStorage,
   limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB max
+    fileSize: 30 * 1024 * 1024 // 30MB max for images and videos
   },
   fileFilter: (req, file, cb) => {
-    if (['image/jpeg', 'image/png', 'image/webp', 'image/jpg'].includes(file.mimetype.toLowerCase())) {
+    if (allowedProductMimes.includes(file.mimetype.toLowerCase())) {
       cb(null, true);
     } else {
-      cb(new Error('Invalid image format. Only JPG, PNG, and WebP images are allowed.'));
+      cb(new Error('Invalid file format. Only JPG, PNG, WebP, GIF, SVG, and MP4/WebM videos are allowed.'));
     }
   }
 });

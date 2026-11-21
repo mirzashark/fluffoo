@@ -577,6 +577,212 @@
     </div>
   </div>
 
+  <!-- ================= PRODUCT ADD / EDIT MODAL (SRS § 7.4) ================= -->
+  <div id="productModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/70">
+        <div>
+          <span class="text-[11px] uppercase tracking-wider text-slate-400 font-bold" id="productModalSubtitle">Catalog Management</span>
+          <h3 id="productModalTitle" class="font-display text-xl font-bold text-cocoa">Add New Product</h3>
+        </div>
+        <button onclick="closeProductModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-500">✕</button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <form id="productForm" onsubmit="handleSaveProduct(event)" class="overflow-y-auto p-6 space-y-6 flex-1 text-xs">
+        <input type="hidden" id="prodId">
+
+        <!-- 1. Basic Details -->
+        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-amber-600 text-base">info</span> Basic Information
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Product Title *</label>
+              <input type="text" id="prodName" required placeholder="e.g. Fluffoo Galloping Daisy Cow Plushie" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none" oninput="autoGenerateSlug(this.value)">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Product URL Slug</label>
+              <input type="text" id="prodSlug" placeholder="e.g. fluffoo-galloping-daisy-cow-plushie" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs text-slate-600 focus:ring-2 focus:ring-amber-500 outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">SKU (Unique Code) *</label>
+              <input type="text" id="prodSku" required placeholder="e.g. FLF-COW-001" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-mono uppercase focus:ring-2 focus:ring-amber-500 outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Category</label>
+              <select id="prodCategory" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                <option value="">Select Category</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Short One-line Teaser Description</label>
+            <input type="text" id="prodShortDesc" placeholder="e.g. Ultra-soft running plush cow companion with signature bell" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+          </div>
+        </div>
+
+        <!-- 2. Pricing & Stock -->
+        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-600 text-base">payments</span> Pricing &amp; Inventory
+          </h4>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Regular Price (PKR) *</label>
+              <input type="number" id="prodRegularPrice" required min="1" placeholder="3600" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Sale / Discount Price</label>
+              <input type="number" id="prodSalePrice" min="0" placeholder="2850" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Stock Quantity *</label>
+              <input type="number" id="prodStock" required min="0" placeholder="50" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Low Stock Alert Level</label>
+              <input type="number" id="prodLowThreshold" min="1" value="5" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+            </div>
+          </div>
+          <div class="flex items-center gap-6 pt-1">
+            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
+              <input type="checkbox" id="prodIsActive" checked class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400">
+              <span>Published &amp; Active on Storefront</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer font-bold text-slate-700">
+              <input type="checkbox" id="prodIsFeatured" class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400">
+              <span>Feature on Homepage Showcase</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 3. Visual Media & Video Provision -->
+        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <h4 class="font-bold text-slate-800 text-sm flex items-center justify-between">
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-purple-600 text-base">photo_library</span> Gallery Media &amp; Product Video</span>
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Main Featured Image URL</label>
+              <div class="flex gap-2">
+                <input type="text" id="prodFeaturedImage" placeholder="https://... or /uploads/products/..." class="flex-1 bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                <label class="px-3 py-2 bg-slate-200 hover:bg-slate-300 rounded-xl font-bold text-slate-700 cursor-pointer flex items-center gap-1 shrink-0">
+                  <span class="material-symbols-outlined text-sm">upload</span> Upload
+                  <input type="file" accept="image/*" class="hidden" onchange="uploadMainImage(this)">
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Product Video URL (MP4 / WebM / YouTube)</label>
+              <div class="flex gap-2">
+                <input type="text" id="prodVideoUrl" placeholder="https://.../video.mp4 or YouTube link" class="flex-1 bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none">
+                <label class="px-3 py-2 bg-purple-100 hover:bg-purple-200 text-purple-900 rounded-xl font-bold cursor-pointer flex items-center gap-1 shrink-0">
+                  <span class="material-symbols-outlined text-sm">video_file</span> Upload Video
+                  <input type="file" accept="video/mp4,video/webm" class="hidden" onchange="uploadMainVideo(this)">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Additional Gallery Images (1 URL per line)</label>
+            <textarea id="prodGalleryImages" rows="3" placeholder="https://...&#10;https://..." class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs font-mono focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+          </div>
+        </div>
+
+        <!-- 4. Specifications Block -->
+        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+            <span class="material-symbols-outlined text-blue-600 text-base">tune</span> Product Specifications
+          </h4>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Material</label>
+              <input type="text" id="specMaterial" placeholder="Ultra-soft Plush Velvet, 100% Hypoallergenic" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Filling</label>
+              <input type="text" id="specFilling" placeholder="Premium 3D PP Cotton (High Resilience)" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Available Sizes</label>
+              <input type="text" id="specSizes" placeholder="30 cm, 45 cm, 60 cm" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Washing / Care</label>
+              <input type="text" id="specCare" placeholder="Hand wash or gentle cycle 30°C" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Age Recommendation</label>
+              <input type="text" id="specAge" placeholder="Safe for ages 3+" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Packaging</label>
+              <input type="text" id="specPackaging" placeholder="Fluffoo Signature Gift Box" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs">
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Rich Description & Visual Infographics (Provision for Text, Videos, Pictures) -->
+        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-rose-600 text-base">article</span> Full Description, Pictures &amp; Videos Provision
+              </h4>
+              <p class="text-[11px] text-slate-500">Add text copy, insert high-res infographics, or embed videos into the customer description.</p>
+            </div>
+            <!-- Quick Insert Toolbar -->
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button type="button" onclick="insertDescText('heading')" class="px-2.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg font-bold text-slate-700 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">title</span> Heading
+              </button>
+              <button type="button" onclick="insertDescText('paragraph')" class="px-2.5 py-1.5 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg font-bold text-slate-700 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">format_paragraph</span> Text
+              </button>
+              <button type="button" onclick="insertDescImagePrompt()" class="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 rounded-lg font-bold flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">image</span> Image URL
+              </button>
+              <label class="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-900 rounded-lg font-bold flex items-center gap-1 shadow-2xs cursor-pointer">
+                <span class="material-symbols-outlined text-xs">add_photo_alternate</span> Upload Picture
+                <input type="file" accept="image/*" class="hidden" onchange="uploadDescMedia(this, 'image')">
+              </label>
+              <button type="button" onclick="insertDescVideoPrompt()" class="px-2.5 py-1.5 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-900 rounded-lg font-bold flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-xs">smart_display</span> Embed Video
+              </button>
+              <label class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-900 rounded-lg font-bold flex items-center gap-1 shadow-2xs cursor-pointer">
+                <span class="material-symbols-outlined text-xs">video_call</span> Upload Video
+                <input type="file" accept="video/mp4,video/webm" class="hidden" onchange="uploadDescMedia(this, 'video')">
+              </label>
+              <button type="button" onclick="toggleDescPreview()" id="togglePreviewBtn" class="px-3 py-1.5 bg-cocoa text-white hover:bg-cocoa/90 rounded-lg font-bold flex items-center gap-1 shadow-2xs ml-1">
+                <span class="material-symbols-outlined text-xs">preview</span> Live Preview
+              </button>
+            </div>
+          </div>
+
+          <!-- Description Editor / Preview area -->
+          <div id="descEditorWrapper">
+            <textarea id="prodDescription" rows="10" placeholder="Enter full HTML or text description, including <img> infographics and <video> tags..." class="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs font-mono leading-relaxed focus:ring-2 focus:ring-amber-500 outline-none" oninput="updateLivePreview()"></textarea>
+          </div>
+          <div id="descPreviewWrapper" class="hidden bg-white border border-slate-200 rounded-xl p-5 max-h-96 overflow-y-auto">
+            <div class="text-[10px] uppercase font-bold text-slate-400 mb-2 pb-1 border-b border-slate-100">Live Customer Storefront Preview:</div>
+            <div id="descLivePreview" class="prose prose-sm max-w-none text-slate-700 space-y-4"></div>
+          </div>
+        </div>
+
+        <!-- Submit & Actions -->
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
+          <button type="button" onclick="closeProductModal()" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl">Cancel</button>
+          <button type="submit" id="saveProductBtn" class="px-7 py-2.5 bg-sunshine hover:bg-sunshine-hover text-cocoa font-bold rounded-xl shadow-sm border border-sunshine-hover flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base">save</span> Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Core Admin Frontend Script -->
   <script>
     let authToken = localStorage.getItem('fluffoo_staff_token') || null;
@@ -602,6 +808,7 @@
       document.getElementById('staffName').textContent = currentStaff.name;
       document.getElementById('staffRoleBadge').textContent = currentStaff.role.replace(/_/g, ' ');
       loadDashboard();
+      loadAdminCategories();
     }
 
     async function handleLogin(e) {
@@ -838,7 +1045,26 @@
       }
     }
 
-    // --- Products Loader ---
+    // --- Categories Cache for Admin ---
+    let adminCategoriesList = [];
+    async function loadAdminCategories() {
+      try {
+        const res = await fetch('/api/v1/categories');
+        const data = await res.json();
+        if (data.success) {
+          adminCategoriesList = data.categories;
+          const selectEl = document.getElementById('prodCategory');
+          if (selectEl) {
+            selectEl.innerHTML = '<option value="">Select Category</option>' +
+              adminCategoriesList.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load categories', e);
+      }
+    }
+
+    // --- Products Loader & Management ---
     async function loadProducts() {
       try {
         const res = await fetch('/api/v1/products/admin/all', {
@@ -849,21 +1075,389 @@
 
         const tbl = document.getElementById('productsAdminTable');
         tbl.innerHTML = data.products.map(p => `
-          <tr class="hover:bg-slate-50">
-            <td class="p-3.5"><img src="${p.featured_image || ''}" class="w-10 h-10 object-cover rounded-xl border border-slate-200"></td>
-            <td class="p-3.5 font-bold">${p.name}<br><span class="text-slate-400 font-mono text-[10px]">${p.sku}</span></td>
-            <td class="p-3.5 text-slate-500">${p.category_name || 'Uncategorized'}</td>
-            <td class="p-3.5 font-bold">Rs. ${p.regular_price.toLocaleString()}</td>
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="p-3.5"><img src="${p.featured_image || ''}" class="w-12 h-12 object-cover rounded-xl border border-slate-200 shadow-2xs"></td>
+            <td class="p-3.5 font-bold">
+              <span class="text-slate-800 text-sm">${p.name}</span>
+              ${p.is_featured ? '<span class="ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Featured</span>' : ''}
+              ${!p.is_active ? '<span class="ml-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-600">Draft</span>' : ''}
+              <br><span class="text-slate-400 font-mono text-[10px]">${p.sku}</span> • <span class="text-slate-400 text-[10px]">/${p.slug}</span>
+            </td>
+            <td class="p-3.5 text-slate-600 font-semibold">${p.category_name || 'Standard'}</td>
+            <td class="p-3.5 font-bold text-slate-800">Rs. ${p.regular_price.toLocaleString()}</td>
             <td class="p-3.5 font-bold text-amber-700">${p.sale_price ? 'Rs. ' + p.sale_price.toLocaleString() : '—'}</td>
-            <td class="p-3.5 font-bold">${p.stock_quantity}</td>
+            <td class="p-3.5 font-bold ${p.stock_quantity <= p.low_stock_threshold ? 'text-rose-600' : 'text-slate-800'}">${p.stock_quantity}</td>
             <td class="p-3.5"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${p.stock_quantity <= p.low_stock_threshold ? 'bg-rose-100 text-rose-800' : 'bg-emerald-100 text-emerald-800'}">${p.stock_status}</span></td>
-            <td class="p-3.5 text-right">
-              <button onclick="editStockQuick(${p.id}, ${p.stock_quantity})" class="text-amber-700 font-bold hover:underline">Adjust Stock</button>
+            <td class="p-3.5 text-right whitespace-nowrap space-x-1.5">
+              <button onclick="openProductModal(${p.id})" class="px-2.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-bold transition-colors">Edit</button>
+              <a href="/product/${p.slug}" target="_blank" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-colors inline-block">View</a>
+              <button onclick="editStockQuick(${p.id}, ${p.stock_quantity})" class="px-2 py-1.5 text-slate-600 hover:text-slate-900 font-bold hover:underline">Stock</button>
+              <button onclick="handleDeleteProduct(${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="px-2 py-1.5 text-rose-600 hover:text-rose-800 font-bold hover:underline">Delete</button>
             </td>
           </tr>
         `).join('');
       } catch (e) {
         console.error(e);
+      }
+    }
+
+    // --- Product Add/Edit Modal Handlers ---
+    async function openProductModal(id = null) {
+      await loadAdminCategories();
+
+      const form = document.getElementById('productForm');
+      form.reset();
+      document.getElementById('descPreviewWrapper').classList.add('hidden');
+      document.getElementById('descEditorWrapper').classList.remove('hidden');
+      document.getElementById('togglePreviewBtn').innerHTML = '<span class="material-symbols-outlined text-xs">preview</span> Live Preview';
+
+      if (!id) {
+        // Create Mode
+        document.getElementById('prodId').value = '';
+        document.getElementById('productModalSubtitle').textContent = 'Catalog Management';
+        document.getElementById('productModalTitle').textContent = 'Add New Product';
+        document.getElementById('prodIsActive').checked = true;
+        document.getElementById('prodIsFeatured').checked = false;
+        document.getElementById('prodStock').value = 50;
+        document.getElementById('prodLowThreshold').value = 5;
+        document.getElementById('productModal').classList.remove('hidden');
+        return;
+      }
+
+      // Edit Mode - Fetch Product
+      try {
+        const res = await fetch(`/api/v1/products/admin/${id}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const data = await res.json();
+        if (!data.success) {
+          alert('Failed to load product details: ' + (data.error || 'Unknown error'));
+          return;
+        }
+
+        const p = data.product;
+        document.getElementById('prodId').value = p.id;
+        document.getElementById('productModalSubtitle').textContent = `Editing SKU: ${p.sku}`;
+        document.getElementById('productModalTitle').textContent = `Edit Product: ${p.name}`;
+
+        document.getElementById('prodName').value = p.name || '';
+        document.getElementById('prodSlug').value = p.slug || '';
+        document.getElementById('prodSku').value = p.sku || '';
+        document.getElementById('prodCategory').value = p.category_id || '';
+        document.getElementById('prodShortDesc').value = p.short_description || '';
+
+        document.getElementById('prodRegularPrice').value = p.regular_price || '';
+        document.getElementById('prodSalePrice').value = p.sale_price || '';
+        document.getElementById('prodStock').value = p.stock_quantity ?? 0;
+        document.getElementById('prodLowThreshold').value = p.low_stock_threshold ?? 5;
+        document.getElementById('prodIsActive').checked = !!p.is_active;
+        document.getElementById('prodIsFeatured').checked = !!p.is_featured;
+
+        document.getElementById('prodFeaturedImage').value = p.featured_image || '';
+        document.getElementById('prodVideoUrl').value = p.video_url || '';
+        document.getElementById('prodGalleryImages').value = Array.isArray(p.images) ? p.images.join('\n') : '';
+
+        // Specifications
+        const specs = p.specifications || {};
+        document.getElementById('specMaterial').value = specs.Material || specs.material || '';
+        document.getElementById('specFilling').value = specs.Filling || specs.filling || '';
+        document.getElementById('specSizes').value = specs['Sizes Available'] || specs.sizes || '';
+        document.getElementById('specCare').value = specs['Washing / Care'] || specs.care || '';
+        document.getElementById('specAge').value = specs['Age Recommendation'] || specs.age || '';
+        document.getElementById('specPackaging').value = specs.Packaging || specs.packaging || '';
+
+        // Description
+        document.getElementById('prodDescription').value = p.full_description || '';
+        updateLivePreview();
+
+        document.getElementById('productModal').classList.remove('hidden');
+      } catch (err) {
+        console.error(err);
+        alert('Server communication error while loading product.');
+      }
+    }
+
+    function closeProductModal() {
+      document.getElementById('productModal').classList.add('hidden');
+    }
+
+    function autoGenerateSlug(name) {
+      if (!document.getElementById('prodId').value) {
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        document.getElementById('prodSlug').value = slug;
+      }
+    }
+
+    // Media Uploads
+    async function uploadMainImage(inputEl) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      const file = inputEl.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/v1/products/admin/upload-media', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${authToken}` },
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('prodFeaturedImage').value = data.file_url;
+          alert('Featured image uploaded successfully!');
+        } else {
+          alert('Upload failed: ' + (data.error || 'Server error'));
+        }
+      } catch (e) {
+        alert('Upload request failed.');
+      }
+    }
+
+    async function uploadMainVideo(inputEl) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      const file = inputEl.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/v1/products/admin/upload-media', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${authToken}` },
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('prodVideoUrl').value = data.file_url;
+          alert('Product video uploaded successfully!');
+        } else {
+          alert('Upload failed: ' + (data.error || 'Server error'));
+        }
+      } catch (e) {
+        alert('Upload request failed.');
+      }
+    }
+
+    // Description Editor Tools
+    function insertDescText(type) {
+      const textarea = document.getElementById('prodDescription');
+      let snippet = '';
+      if (type === 'heading') {
+        const heading = prompt('Enter section heading text:', 'Ultra-Soft Huggable Comfort');
+        if (!heading) return;
+        snippet = `\n<h3 class="text-xl font-bold font-display text-cocoa mt-6 mb-3">${heading}</h3>\n`;
+      } else if (type === 'paragraph') {
+        const text = prompt('Enter text paragraph copy:', 'Crafted with premium high-density plush fabric...');
+        if (!text) return;
+        snippet = `\n<p class="text-slate-600 leading-relaxed mb-4">${text}</p>\n`;
+      }
+      insertAtCursor(textarea, snippet);
+      updateLivePreview();
+    }
+
+    function insertDescImagePrompt() {
+      const textarea = document.getElementById('prodDescription');
+      const url = prompt('Enter image URL for visual infographic:');
+      if (!url) return;
+      const alt = prompt('Enter image caption or alt text:', 'Product Visual Infographic') || 'Product Infographic';
+      const snippet = `\n<div class="my-6 text-center"><img src="${url}" alt="${alt}" class="w-full rounded-3xl shadow-sm mx-auto object-cover"></div>\n`;
+      insertAtCursor(textarea, snippet);
+      updateLivePreview();
+    }
+
+    function insertDescVideoPrompt() {
+      const textarea = document.getElementById('prodDescription');
+      const url = prompt('Enter Video URL (MP4 direct link or YouTube embed URL):');
+      if (!url) return;
+
+      let snippet = '';
+      if (url.includes('youtube.com') || url.includes('youtu.be')) {
+        let embedUrl = url;
+        if (url.includes('watch?v=')) {
+          embedUrl = url.replace('watch?v=', 'embed/');
+        } else if (url.includes('youtu.be/')) {
+          embedUrl = url.replace('youtu.be/', 'www.youtube.com/embed/');
+        }
+        snippet = `\n<div class="my-6 aspect-video rounded-3xl overflow-hidden shadow-sm"><iframe src="${embedUrl}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>\n`;
+      } else {
+        snippet = `\n<div class="my-6 rounded-3xl overflow-hidden shadow-sm"><video controls autoplay muted loop playsinline class="w-full h-auto rounded-3xl"><source src="${url}" type="video/mp4"></video></div>\n`;
+      }
+      insertAtCursor(textarea, snippet);
+      updateLivePreview();
+    }
+
+    async function uploadDescMedia(inputEl, type) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      const file = inputEl.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const res = await fetch('/api/v1/products/admin/upload-media', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${authToken}` },
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          const textarea = document.getElementById('prodDescription');
+          let snippet = '';
+          if (type === 'video' || data.is_video) {
+            snippet = `\n<div class="my-6 rounded-3xl overflow-hidden shadow-sm"><video controls autoplay muted loop playsinline class="w-full h-auto rounded-3xl"><source src="${data.file_url}" type="video/mp4"></video></div>\n`;
+          } else {
+            snippet = `\n<div class="my-6 text-center"><img src="${data.file_url}" alt="Product Visual Infographic" class="w-full rounded-3xl shadow-sm mx-auto object-cover"></div>\n`;
+          }
+          insertAtCursor(textarea, snippet);
+          updateLivePreview();
+          alert(`${type === 'video' ? 'Video' : 'Picture'} uploaded and inserted into description!`);
+        } else {
+          alert('Upload failed: ' + (data.error || 'Server error'));
+        }
+      } catch (e) {
+        alert('Upload request failed.');
+      }
+      inputEl.value = '';
+    }
+
+    function insertAtCursor(myField, myValue) {
+      if (myField.selectionStart || myField.selectionStart == '0') {
+        const startPos = myField.selectionStart;
+        const endPos = myField.selectionEnd;
+        myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
+        myField.selectionStart = startPos + myValue.length;
+        myField.selectionEnd = startPos + myValue.length;
+      } else {
+        myField.value += myValue;
+      }
+    }
+
+    function toggleDescPreview() {
+      const editor = document.getElementById('descEditorWrapper');
+      const preview = document.getElementById('descPreviewWrapper');
+      const btn = document.getElementById('togglePreviewBtn');
+      if (preview.classList.contains('hidden')) {
+        preview.classList.remove('hidden');
+        editor.classList.add('hidden');
+        btn.innerHTML = '<span class="material-symbols-outlined text-xs">edit_note</span> Edit HTML';
+        updateLivePreview();
+      } else {
+        preview.classList.add('hidden');
+        editor.classList.remove('hidden');
+        btn.innerHTML = '<span class="material-symbols-outlined text-xs">preview</span> Live Preview';
+      }
+    }
+
+    function updateLivePreview() {
+      const val = document.getElementById('prodDescription').value;
+      document.getElementById('descLivePreview').innerHTML = val || '<p class="text-slate-400 italic">No description copy or visual infographics entered yet.</p>';
+    }
+
+    // Save Product (Create or Update)
+    async function handleSaveProduct(e) {
+      e.preventDefault();
+      const id = document.getElementById('prodId').value;
+      const name = document.getElementById('prodName').value.trim();
+      const slug = document.getElementById('prodSlug').value.trim();
+      const sku = document.getElementById('prodSku').value.trim();
+      const category_id = document.getElementById('prodCategory').value ? Number(document.getElementById('prodCategory').value) : null;
+      const short_description = document.getElementById('prodShortDesc').value.trim();
+      const regular_price = Number(document.getElementById('prodRegularPrice').value);
+      const sale_price_val = document.getElementById('prodSalePrice').value;
+      const sale_price = sale_price_val !== '' ? Number(sale_price_val) : null;
+      const stock_quantity = Number(document.getElementById('prodStock').value);
+      const low_stock_threshold = Number(document.getElementById('prodLowThreshold').value) || 5;
+      const is_active = document.getElementById('prodIsActive').checked ? 1 : 0;
+      const is_featured = document.getElementById('prodIsFeatured').checked ? 1 : 0;
+      const featured_image = document.getElementById('prodFeaturedImage').value.trim() || null;
+      const video_url = document.getElementById('prodVideoUrl').value.trim() || null;
+      const full_description = document.getElementById('prodDescription').value.trim();
+
+      if (sale_price && sale_price > regular_price) {
+        alert('Sale price cannot exceed regular price (SRS § 7.4).');
+        return;
+      }
+
+      // Parse gallery images
+      const galleryLines = document.getElementById('prodGalleryImages').value.split('\n').map(l => l.trim()).filter(Boolean);
+      let images = galleryLines;
+      if (featured_image && !images.includes(featured_image)) {
+        images.unshift(featured_image);
+      }
+
+      // Parse specifications
+      const specifications = {
+        Material: document.getElementById('specMaterial').value.trim(),
+        Filling: document.getElementById('specFilling').value.trim(),
+        'Sizes Available': document.getElementById('specSizes').value.trim(),
+        'Washing / Care': document.getElementById('specCare').value.trim(),
+        'Age Recommendation': document.getElementById('specAge').value.trim(),
+        Packaging: document.getElementById('specPackaging').value.trim()
+      };
+
+      const payload = {
+        name,
+        slug,
+        sku,
+        category_id,
+        short_description,
+        full_description,
+        regular_price,
+        sale_price,
+        stock_quantity,
+        low_stock_threshold,
+        is_active,
+        is_featured,
+        featured_image,
+        video_url,
+        images,
+        specifications
+      };
+
+      try {
+        const url = id ? `/api/v1/products/admin/${id}` : '/api/v1/products/admin';
+        const method = id ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          alert(id ? 'Product updated successfully!' : 'Product created successfully!');
+          closeProductModal();
+          loadProducts();
+          loadDashboard();
+        } else {
+          alert('Failed to save product: ' + (data.error || 'Server error'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Server communication error.');
+      }
+    }
+
+    async function handleDeleteProduct(id, name) {
+      if (confirm(`Are you sure you want to permanently delete "${name}" from the store catalog?`)) {
+        try {
+          const res = await fetch(`/api/v1/products/admin/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${authToken}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert('Product deleted successfully');
+            loadProducts();
+            loadDashboard();
+          } else {
+            alert(data.error);
+          }
+        } catch (e) {
+          alert('Server communication error');
+        }
       }
     }
 

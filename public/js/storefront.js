@@ -22,7 +22,10 @@ async function fetchInitialData() {
     ]);
 
     const prodData = await prodRes.json();
-    if (prodData.success) catalogProducts = prodData.products;
+    if (prodData.success) {
+      catalogProducts = prodData.products;
+      renderCatalogGrid();
+    }
 
     const zonesData = await zonesRes.json();
     if (zonesData.success) {
@@ -81,8 +84,86 @@ function addToBag(productName, customPrice, customImg) {
   showToast(`${name} added to your cuddle bag!`);
 }
 
+function addToBagById(productId) {
+  const item = catalogProducts.find(p => p.id === productId);
+  if (!item) return;
+  const price = item.sale_price || item.regular_price;
+  const existingIndex = cart.findIndex(c => c.product_id === item.id && (!c.variation_id));
+  if (existingIndex > -1) {
+    cart[existingIndex].quantity += 1;
+  } else {
+    cart.push({
+      product_id: item.id,
+      name: item.name,
+      price: price,
+      image_url: item.featured_image || '',
+      sku: item.sku,
+      quantity: 1
+    });
+  }
+  updateHeaderCart();
+  showToast(`${item.name} added to your cuddle bag!`);
+}
+
+function renderCatalogGrid() {
+  const grid = document.getElementById('productGrid');
+  if (!grid || !catalogProducts.length) return;
+
+  grid.innerHTML = catalogProducts.map(p => {
+    let cat = 'fluffoo';
+    const nameLower = p.name.toLowerCase();
+    const slugLower = p.slug.toLowerCase();
+    if (nameLower.includes('bunny') || slugLower.includes('bunny')) cat = 'bunny';
+    else if (nameLower.includes('giant') || nameLower.includes('long') || nameLower.includes('50cm') || nameLower.includes('55cm') || nameLower.includes('pillow')) cat = 'giant';
+    else if (nameLower.includes('sleep') || nameLower.includes('warm') || nameLower.includes('pouch')) cat = 'sleepies';
+
+    const discountBadge = p.discount_percentage > 0
+      ? `<span class="bg-pink-accent text-white font-label-sm text-xs px-2.5 py-1 rounded-full font-bold shadow-xs">${p.discount_percentage}% OFF</span>`
+      : '';
+
+    return `
+      <div class="product-card group bg-white rounded-2xl p-4 shadow-sm hover:shadow-[0_12px_32px_-4px_rgba(255,213,42,0.25)] border border-butter/60 transition-all duration-300 flex flex-col justify-between" data-category="${cat}">
+        <div>
+          <a href="/product/${p.slug}" class="block relative w-full aspect-square rounded-xl bg-butter-light overflow-hidden mb-3">
+            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${p.featured_image || ''}" alt="${p.name}">
+            <div class="absolute top-3 left-3 flex flex-col gap-1">
+              ${p.is_featured ? '<span class="bg-sunshine text-cocoa text-xs px-2.5 py-1 rounded-full font-bold shadow-xs">Bestseller</span>' : '<span class="bg-sunshine text-cocoa text-xs px-2.5 py-1 rounded-full font-bold shadow-xs">Trending</span>'}
+              ${discountBadge}
+            </div>
+            <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-sm text-pink-accent hover:scale-110 flex items-center justify-center transition-all shadow-sm border border-butter" onclick="event.preventDefault(); toggleWishlist(this)">
+              <span class="material-symbols-outlined text-base">favorite_border</span>
+            </button>
+            <div class="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs text-cocoa font-semibold shadow-xs border border-butter">
+              ${p.category_name || 'Plush Cuddle'}
+            </div>
+          </a>
+          <div class="flex items-center gap-1.5 mb-1.5">
+            <div class="flex items-center text-sunshine-hover text-xs">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+            <span class="text-xs text-charcoal">4.9 (50+)</span>
+          </div>
+          <a href="/product/${p.slug}" class="block">
+            <h3 class="text-base text-cocoa group-hover:text-pink-accent transition-colors line-clamp-1 font-bold">${p.name}</h3>
+          </a>
+          <p class="text-xs text-charcoal line-clamp-1 mt-0.5">${p.short_description || 'Ultra-soft plush companion handcrafted with boundless love.'}</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-butter/50 flex items-center justify-between">
+          <div class="flex flex-col">
+            <span class="text-lg font-bold text-cocoa">Rs. ${(p.sale_price || p.regular_price).toLocaleString()}</span>
+            ${p.sale_price && p.sale_price < p.regular_price ? `<span class="text-xs text-charcoal/60 line-through">Rs. ${p.regular_price.toLocaleString()}</span>` : ''}
+          </div>
+          <button class="w-10 h-10 rounded-full bg-sunshine hover:bg-sunshine-hover text-cocoa flex items-center justify-center shadow-sm transition-transform active:scale-95 border border-sunshine-hover" onclick="addToBagById(${p.id})">
+            <span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 function setupProductCardListeners() {
-  // Match existing HTML buttons to call addToBag with exact items
+  // Setup dynamic listeners
   console.log('Fluffoo Storefront dynamic cart ready.');
 }
 

@@ -1,6 +1,7 @@
 import express from 'express';
 import db from '../db/database.js';
 import { authenticateToken, requireStaffRole } from '../middleware/auth.js';
+import { uploadProductImage } from '../middleware/upload.js';
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ const router = express.Router();
 // Browse all published products with filtering, search, and sorting
 router.get('/', (req, res) => {
   try {
-    const { category, search, min_price, max_price, sort = 'newest', page = 1, limit = 12 } = req.query;
+    const { category, search, min_price, max_price, sort = 'newest', page = 1, limit = 50 } = req.query;
 
     let query = `
       SELECT p.*, c.name as category_name, c.slug as category_slug
@@ -144,6 +145,8 @@ router.get('/:slug', (req, res) => {
       product: {
         ...product,
         images: JSON.parse(product.images || '[]'),
+        specifications: JSON.parse(product.specifications || '{}'),
+        video_url: product.video_url || null,
         discount_percentage: product.sale_price && product.sale_price < product.regular_price
           ? Math.round(((product.regular_price - product.sale_price) / product.regular_price) * 100)
           : 0,
@@ -178,6 +181,56 @@ router.get('/admin/all', authenticateToken, requireStaffRole('product_manager', 
   }
 });
 
+// Admin upload product media (images or videos)
+router.post('/admin/upload-media', authenticateToken, requireStaffRole('product_manager', 'super_admin'), uploadProductImage.single('file'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No media file provided.' });
+    }
+    const fileUrl = `/uploads/products/${req.file.filename}`;
+    res.json({
+      success: true,
+      file_url: fileUrl,
+      filename: req.file.filename,
+      mimetype: req.file.mimetype,
+      is_video: req.file.mimetype.startsWith('video/')
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin fetch single product by id with raw values
+router.get('/admin/:id', authenticateToken, requireStaffRole('product_manager', 'super_admin'), (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = db.prepare(`
+      SELECT p.*, c.name as category_name
+      FROM products p
+      LEFT JOIN categories c ON p.category_id = c.id
+      WHERE p.id = ?
+    `).get(id);
+
+    if (!product) {
+      return res.status(404).json({ success: false, error: 'Product not found.' });
+    }
+
+    const variations = db.prepare('SELECT * FROM product_variations WHERE product_id = ?').all(id);
+
+    res.json({
+      success: true,
+      product: {
+        ...product,
+        images: JSON.parse(product.images || '[]'),
+        specifications: JSON.parse(product.specifications || '{}'),
+        variations
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Create product (SRS § 7.4: Sale price <= regular price, unique SKU)
 router.post('/admin', authenticateToken, requireStaffRole('product_manager', 'super_admin'), (req, res) => {
   try {
@@ -185,6 +238,7 @@ router.post('/admin', authenticateToken, requireStaffRole('product_manager', 'su
       name, slug, sku, short_description, full_description,
       regular_price, sale_price, stock_quantity = 0, low_stock_threshold = 5,
       category_id, images = [], featured_image, is_featured = 0, is_active = 1,
+      video_url = null, specifications = {},
       seo_title, seo_description
     } = req.body;
 
@@ -206,14 +260,16 @@ router.post('/admin', authenticateToken, requireStaffRole('product_manager', 'su
         name, slug, sku, short_description, full_description,
         regular_price, sale_price, stock_quantity, stock_status, low_stock_threshold,
         category_id, images, featured_image, is_featured, is_active,
-        seo_title, seo_description
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        video_url, specifications, seo_title, seo_description
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
-      name, autoSlug, sku, short_description, full_description,
+      name, autoSlug, sku, short_description || null, full_description || null,
       Number(regular_price), sale_price ? Number(sale_price) : null,
       Number(stock_quantity), stockStatus, Number(low_stock_threshold),
       category_id || null, JSON.stringify(images), featured_image || (images[0] || null),
-      is_featured ? 1 : 0, is_active ? 1 : 0, seo_title, seo_description
+      is_featured ? 1 : 0, is_active ? 1 : 0,
+      video_url || null, typeof specifications === 'string' ? specifications : JSON.stringify(specifications),
+      seo_title || null, seo_description || null
     );
 
     // Initial inventory log
@@ -247,6 +303,7 @@ router.put('/admin/:id', authenticateToken, requireStaffRole('product_manager', 
       name, slug, sku, short_description, full_description,
       regular_price, sale_price, stock_quantity, low_stock_threshold,
       category_id, images, featured_image, is_featured, is_active,
+      video_url, specifications,
       seo_title, seo_description
     } = req.body;
 
@@ -278,19 +335,23 @@ router.put('/admin/:id', authenticateToken, requireStaffRole('product_manager', 
         featured_image = COALESCE(?, featured_image),
         is_featured = COALESCE(?, is_featured),
         is_active = COALESCE(?, is_active),
+        video_url = COALESCE(?, video_url),
+        specifications = COALESCE(?, specifications),
         seo_title = COALESCE(?, seo_title),
         seo_description = COALESCE(?, seo_description),
         updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `).run(
-      name, slug, sku, short_description, full_description,
+      name || null, slug || null, sku || null, short_description || null, full_description || null,
       regPrice, sPrice, newStock, stockStatus, threshold,
       category_id !== undefined ? category_id : existing.category_id,
       images ? JSON.stringify(images) : null,
-      featured_image,
+      featured_image || null,
       is_featured !== undefined ? (is_featured ? 1 : 0) : null,
       is_active !== undefined ? (is_active ? 1 : 0) : null,
-      seo_title, seo_description,
+      video_url !== undefined ? video_url : null,
+      specifications !== undefined ? (typeof specifications === 'string' ? specifications : JSON.stringify(specifications)) : null,
+      seo_title || null, seo_description || null,
       id
     );
 
