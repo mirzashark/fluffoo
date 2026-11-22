@@ -7,7 +7,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 let dbPath = path.resolve(__dirname, '../../fluffoo.sqlite');
-const schemaPath = path.resolve(__dirname, 'schema.sql');
+if (!fs.existsSync(dbPath)) {
+  dbPath = path.join(process.cwd(), 'fluffoo.sqlite');
+}
+let schemaPath = path.resolve(__dirname, 'schema.sql');
+if (!fs.existsSync(schemaPath)) {
+  schemaPath = path.join(process.cwd(), 'src/db/schema.sql');
+}
 
 // In Vercel serverless functions, the deployment directory is read-only.
 // Copy bundled SQLite database to /tmp for full read/write support.

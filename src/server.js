@@ -41,9 +41,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static frontend assets (without automatic index.html override so SEO injector handles root)
-const publicPath = path.resolve(__dirname, '../public');
+let publicPath = path.resolve(__dirname, '../public');
+if (!fs.existsSync(publicPath)) {
+  publicPath = path.join(process.cwd(), 'public');
+}
+let uploadsPath = path.resolve(__dirname, '../uploads');
+if (!fs.existsSync(uploadsPath)) {
+  uploadsPath = path.join(process.cwd(), 'uploads');
+}
 app.use(express.static(publicPath, { index: false }));
-app.use('/uploads', express.static(path.resolve(__dirname, '../uploads')));
+app.use('/uploads', express.static(uploadsPath));
 
 // Health check endpoint
 app.get('/api/v1/health', (req, res) => {
