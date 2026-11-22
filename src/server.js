@@ -168,11 +168,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Fluffoo E-Commerce Backend & Services running on http://127.0.0.1:${PORT}`);
-  console.log(`🛍️ Customer Storefront: http://127.0.0.1:${PORT}/`);
-  console.log(`🛡️ Admin Back-Office Panel: http://127.0.0.1:${PORT}/admin`);
-  console.log(`📦 Order Tracking: http://127.0.0.1:${PORT}/track`);
-});
+if (!process.env.VERCEL) {
+  const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Fluffoo E-Commerce Backend & Services running on http://127.0.0.1:${PORT}`);
+    console.log(`🛍️ Customer Storefront: http://127.0.0.1:${PORT}/`);
+    console.log(`🛡️ Admin Back-Office Panel: http://127.0.0.1:${PORT}/admin`);
+    console.log(`📦 Order Tracking: http://127.0.0.1:${PORT}/track`);
+  });
+}
 
 export default app;

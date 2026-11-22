@@ -6,14 +6,35 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dbPath = path.resolve(__dirname, '../../fluffoo.sqlite');
+let dbPath = path.resolve(__dirname, '../../fluffoo.sqlite');
 const schemaPath = path.resolve(__dirname, 'schema.sql');
+
+// In Vercel serverless functions, the deployment directory is read-only.
+// Copy bundled SQLite database to /tmp for full read/write support.
+if (process.env.VERCEL) {
+  const tmpDbPath = path.join('/tmp', 'fluffoo.sqlite');
+  if (!fs.existsSync(tmpDbPath)) {
+    if (fs.existsSync(dbPath)) {
+      try {
+        fs.copyFileSync(dbPath, tmpDbPath);
+        console.log('📦 Copied pre-seeded fluffoo.sqlite to /tmp for Vercel execution');
+      } catch (err) {
+        console.error('Failed to copy bundled sqlite to /tmp:', err);
+      }
+    }
+  }
+  dbPath = tmpDbPath;
+}
 
 export const db = new DatabaseSync(dbPath);
 
-// Enable foreign keys and WAL journal mode
+// Enable foreign keys
 db.exec('PRAGMA foreign_keys = ON;');
-db.exec('PRAGMA journal_mode = WAL;');
+try {
+  db.exec('PRAGMA journal_mode = WAL;');
+} catch (_) {
+  // Ignore WAL fallback in environments where WAL is restricted
+}
 
 export function initDatabase() {
   const schema = fs.readFileSync(schemaPath, 'utf8');
