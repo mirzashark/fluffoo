@@ -19,16 +19,16 @@
   "author": "Fluffoo Team",
   "license": "ISC",
   "engines": {
-    "node": "22.x"
+    "node": ">=20.x"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^13.2.0",
     "cors": "^2.8.6",
     "dotenv": "^18.0.10",
     "express": "^5.3.0",
     "jsonwebtoken": "^9.0.3",
-    "multer": "^2.5.0"
+    "multer": "^2.5.0",
+    "sql.js": "^1.17.0"
   },
   "devDependencies": {
     "vercel": "^66.6.0"

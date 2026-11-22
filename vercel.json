@@ -6,7 +6,8 @@
         "public/**",
         "uploads/**",
         "fluffoo.sqlite",
-        "src/db/schema.sql"
+        "src/db/schema.sql",
+        "node_modules/sql.js/dist/sql-wasm.wasm"
       ]
     }
   },
