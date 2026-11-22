@@ -7,13 +7,19 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const uploadRoot = path.resolve(__dirname, '../../uploads');
+const uploadRoot = process.env.VERCEL
+  ? path.join('/tmp', 'uploads')
+  : path.resolve(__dirname, '../../uploads');
 const proofsDir = path.join(uploadRoot, 'proofs');
 const productsDir = path.join(uploadRoot, 'products');
 
 // Ensure directories exist
-fs.mkdirSync(proofsDir, { recursive: true });
-fs.mkdirSync(productsDir, { recursive: true });
+try {
+  fs.mkdirSync(proofsDir, { recursive: true });
+  fs.mkdirSync(productsDir, { recursive: true });
+} catch (e) {
+  console.log('Notice: Upload directories could not be created:', e.message);
+}
 
 // Allowed file types for payment proofs: JPG, JPEG, PNG, PDF
 const allowedProofMimes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];

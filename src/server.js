@@ -51,6 +51,9 @@ if (!fs.existsSync(uploadsPath)) {
 }
 app.use(express.static(publicPath, { index: false }));
 app.use('/uploads', express.static(uploadsPath));
+if (process.env.VERCEL) {
+  app.use('/uploads', express.static('/tmp/uploads'));
+}
 
 // Health check endpoint
 app.get('/api/v1/health', (req, res) => {
