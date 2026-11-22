@@ -19,7 +19,7 @@
   "author": "Fluffoo Team",
   "license": "ISC",
   "engines": {
-    "node": ">=22.x"
+    "node": "22.x"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
