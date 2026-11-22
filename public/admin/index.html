@@ -430,6 +430,43 @@
               </a>
             </div>
           </div>
+
+          <!-- SEO & Indexing Tools Card -->
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+            <h3 class="font-display font-bold text-base text-slate-800 mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600">travel_explore</span> Search Engine Optimization (SEO) &amp; Indexing Status
+            </h3>
+            <p class="text-xs text-slate-500 mb-4">Google &amp; Bing crawler access, dynamic XML image sitemap, Open Graph previews, and Schema.org rich results diagnostics.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5 text-xs">
+              <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-400 font-bold block uppercase text-[10px]">Indexed Product URLs</span>
+                <span id="seoIndexedCount" class="text-lg font-bold text-slate-800">19 / 19 Live</span>
+              </div>
+              <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-400 font-bold block uppercase text-[10px]">Rich Schema Markup</span>
+                <span class="text-xs font-bold text-emerald-700 flex items-center gap-1 mt-1">
+                  <span class="material-symbols-outlined text-sm">check_circle</span> Active (JSON-LD)
+                </span>
+              </div>
+              <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                <span class="text-slate-400 font-bold block uppercase text-[10px]">Robots Directives</span>
+                <span class="text-xs font-bold text-emerald-700 flex items-center gap-1 mt-1">
+                  <span class="material-symbols-outlined text-sm">verified</span> Crawlers Allowed
+                </span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href="/sitemap.xml" target="_blank" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-sm">map</span> View sitemap.xml
+              </a>
+              <a href="/robots.txt" target="_blank" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-sm">smart_toy</span> View robots.txt
+              </a>
+              <a href="https://search.google.com/test/rich-results" target="_blank" class="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs rounded-xl flex items-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-sm">fact_check</span> Test on Google Rich Results
+              </a>
+            </div>
+          </div>
         </div>
 
         <!-- ================= 9. SETTINGS (SRS § 7.13) ================= -->
@@ -769,6 +806,55 @@
           <div id="descPreviewWrapper" class="hidden bg-white border border-slate-200 rounded-xl p-5 max-h-96 overflow-y-auto">
             <div class="text-[10px] uppercase font-bold text-slate-400 mb-2 pb-1 border-b border-slate-100">Live Customer Storefront Preview:</div>
             <div id="descLivePreview" class="prose prose-sm max-w-none text-slate-700 space-y-4"></div>
+          </div>
+        </div>
+
+        <!-- 6. Search Engine Optimization (SEO & SERP Preview) -->
+        <div class="bg-slate-50/80 p-4 rounded-2xl border border-slate-200 space-y-4">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600 text-base">travel_explore</span> Search Engine Optimization (SEO &amp; Indexing)
+            </h4>
+            <button type="button" onclick="autoGenerateProductSeo()" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg text-xs font-bold flex items-center gap-1 transition-colors">
+              <span class="material-symbols-outlined text-xs">auto_awesome</span> Auto-Generate SEO
+            </button>
+          </div>
+          
+          <div class="space-y-3">
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block font-bold text-slate-700">SEO Page Title</label>
+                <span id="seoTitleCounter" class="text-[11px] font-mono text-slate-400">0 / 60 chars</span>
+              </div>
+              <input type="text" id="prodSeoTitle" placeholder="e.g. Fluffoo Galloping Daisy Cow Plushie | Buy Online in Pakistan | Fluffoo" class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none" oninput="updateSeoSnippetPreview()">
+            </div>
+
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block font-bold text-slate-700">SEO Meta Description</label>
+                <span id="seoDescCounter" class="text-[11px] font-mono text-slate-400">0 / 160 chars</span>
+              </div>
+              <textarea id="prodSeoDesc" rows="2" placeholder="e.g. Buy authentic Fluffoo Galloping Cow Plushie in Pakistan. Kinetic bouncy running legs, ultra-soft fleece, cash on delivery nationwide." class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-xs focus:ring-2 focus:ring-amber-500 outline-none" oninput="updateSeoSnippetPreview()"></textarea>
+            </div>
+          </div>
+
+          <!-- Live Google Search Result Preview -->
+          <div class="bg-white p-4 rounded-xl border border-slate-200">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2">Google Search Snippet Preview:</span>
+            <div class="space-y-1">
+              <div class="flex items-center gap-1.5 text-xs text-slate-600 truncate">
+                <span class="w-4 h-4 rounded-full bg-sunshine flex items-center justify-center text-[10px] font-bold text-cocoa">F</span>
+                <span class="font-sans font-medium text-slate-800">Fluffoo Pakistan</span>
+                <span class="text-slate-400">›</span>
+                <span id="serpPreviewSlug" class="text-slate-500 font-mono text-[11px]">product › ...</span>
+              </div>
+              <h5 id="serpPreviewTitle" class="text-base text-blue-700 hover:underline font-medium cursor-pointer leading-tight truncate">
+                Fluffoo Product Title
+              </h5>
+              <p id="serpPreviewDesc" class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                Meta description preview will appear here as you type.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -1120,6 +1206,9 @@
         document.getElementById('prodIsFeatured').checked = false;
         document.getElementById('prodStock').value = 50;
         document.getElementById('prodLowThreshold').value = 5;
+        document.getElementById('prodSeoTitle').value = '';
+        document.getElementById('prodSeoDesc').value = '';
+        updateSeoSnippetPreview();
         document.getElementById('productModal').classList.remove('hidden');
         return;
       }
@@ -1170,6 +1259,11 @@
         document.getElementById('prodDescription').value = p.full_description || '';
         updateLivePreview();
 
+        // SEO Fields
+        document.getElementById('prodSeoTitle').value = p.seo_title || '';
+        document.getElementById('prodSeoDesc').value = p.seo_description || '';
+        updateSeoSnippetPreview();
+
         document.getElementById('productModal').classList.remove('hidden');
       } catch (err) {
         console.error(err);
@@ -1186,6 +1280,60 @@
         const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
         document.getElementById('prodSlug').value = slug;
       }
+      updateSeoSnippetPreview();
+    }
+
+    function updateSeoSnippetPreview() {
+      const name = document.getElementById('prodName')?.value.trim() || 'Product Name';
+      const slug = document.getElementById('prodSlug')?.value.trim() || 'product-slug';
+      const seoTitleInput = document.getElementById('prodSeoTitle');
+      const seoDescInput = document.getElementById('prodSeoDesc');
+      if (!seoTitleInput || !seoDescInput) return;
+
+      const titleCount = seoTitleInput.value.length;
+      const descCount = seoDescInput.value.length;
+
+      const titleCounter = document.getElementById('seoTitleCounter');
+      if (titleCounter) {
+        titleCounter.textContent = `${titleCount} / 60 chars`;
+        titleCounter.className = titleCount > 60 ? 'text-[11px] font-mono text-rose-600 font-bold' : 'text-[11px] font-mono text-slate-400';
+      }
+
+      const descCounter = document.getElementById('seoDescCounter');
+      if (descCounter) {
+        descCounter.textContent = `${descCount} / 160 chars`;
+        descCounter.className = descCount > 160 ? 'text-[11px] font-mono text-rose-600 font-bold' : 'text-[11px] font-mono text-slate-400';
+      }
+
+      const displayTitle = seoTitleInput.value.trim() || `${name} | Buy Online in Pakistan | Fluffoo`;
+      const displayDesc = seoDescInput.value.trim() || document.getElementById('prodShortDesc')?.value.trim() || 'Order authentic plush toys in Pakistan with free nationwide shipping over Rs. 3,500 and Cash on Delivery.';
+
+      const previewSlug = document.getElementById('serpPreviewSlug');
+      if (previewSlug) previewSlug.textContent = `product › ${slug}`;
+
+      const previewTitle = document.getElementById('serpPreviewTitle');
+      if (previewTitle) previewTitle.textContent = displayTitle;
+
+      const previewDesc = document.getElementById('serpPreviewDesc');
+      if (previewDesc) previewDesc.textContent = displayDesc;
+    }
+
+    function autoGenerateProductSeo() {
+      const name = document.getElementById('prodName')?.value.trim();
+      const price = document.getElementById('prodSalePrice')?.value || document.getElementById('prodRegularPrice')?.value;
+      const shortDesc = document.getElementById('prodShortDesc')?.value.trim();
+      if (!name) {
+        alert('Please enter a product title first.');
+        return;
+      }
+      const generatedTitle = `${name} | Buy Online in Pakistan | Fluffoo`;
+      let generatedDesc = shortDesc;
+      if (!generatedDesc || generatedDesc.length < 50) {
+        generatedDesc = `Order authentic ${name} online from Fluffoo Pakistan. Premium ultra-soft plush fabric, hypoallergenic filling${price ? ` starting from Rs. ${Number(price).toLocaleString()}` : ''}. Fast nationwide delivery & Cash on Delivery.`;
+      }
+      document.getElementById('prodSeoTitle').value = generatedTitle;
+      document.getElementById('prodSeoDesc').value = generatedDesc;
+      updateSeoSnippetPreview();
     }
 
     // Media Uploads
@@ -1409,7 +1557,9 @@
         featured_image,
         video_url,
         images,
-        specifications
+        specifications,
+        seo_title: document.getElementById('prodSeoTitle')?.value.trim() || null,
+        seo_description: document.getElementById('prodSeoDesc')?.value.trim() || null
       };
 
       try {

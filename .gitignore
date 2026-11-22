@@ -4,7 +4,8 @@ dist/
 *.log
 .env
 .env.local
-uploads/
+uploads/proofs/
+uploads/tmp/
 *.sqlite
 *.sqlite3
 *.sqlite-shm
